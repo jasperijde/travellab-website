@@ -1,0 +1,11 @@
+# Netlify configuration for Travel Lab
+# Just deploy the website folder — no build step needed!
+
+[build]
+  publish = "."
+
+# Clean URLs (removes .html from browser address bar)
+[[redirects]]
+  from = "/blog"
+  to = "/blog/"
+  status = 301

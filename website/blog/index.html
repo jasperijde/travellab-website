@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Travel Lab</title>
+  <meta name="description" content="Follow the Travel Lab journey — weekly updates, travel tips, and behind-the-scenes stories from our team.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ====== NAVBAR ====== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="navbar-logo">
+        <img src="../images/logo.png" alt="Travel Lab logo">
+        <span>Travel Lab</span>
+      </a>
+      <button class="menu-toggle" onclick="document.querySelector('.navbar-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog/" class="active">Blog</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ====== PAGE HEADER ====== -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Our Blog</h1>
+      <p>Weekly updates on our journey building Travel Lab</p>
+    </div>
+  </section>
+
+  <!-- ====== BLOG LISTING ====== -->
+  <section class="blog-section">
+    <div class="container">
+      <div class="blog-grid">
+
+        <!-- ====== BLOG POST CARD ======
+             To add a new blog post:
+             1. Copy the entire blog-card div below
+             2. Paste it ABOVE the existing cards (newest first)
+             3. Update the emoji, date, title, summary, and link
+             4. Create a new HTML file in the blog/ folder for the full post
+        -->
+
+        <div class="blog-card">
+          <div class="blog-card-image">🚀</div>
+          <div class="blog-card-body">
+            <p class="blog-card-meta">March 29, 2026 · Week 1</p>
+            <h3><a href="/blog/week-1-kickoff.html">Week 1: The Travel Lab Journey Begins</a></h3>
+            <p>We're kicking off our entrepreneurial lab project! Meet the idea behind Travel Lab and what we're setting out to build.</p>
+            <a href="/blog/week-1-kickoff.html" class="read-more">Read more →</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2026 Travel Lab. A project by Erasmus University students.</p>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
