@@ -1,5 +1,5 @@
 # Netlify configuration for Travel Lab
-# Just deploy the website folder — no build step needed!
+# Just deploy the website folder - no build step needed!
 
 [build]
   publish = "."
