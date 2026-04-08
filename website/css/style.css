@@ -466,6 +466,24 @@ h3 { font-size: 1.3rem; }
   margin-bottom: 16px;
 }
 
+.blog-image {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.blog-image img {
+  max-width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+
+.blog-image figcaption {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
 .back-link {
   display: inline-block;
   margin-bottom: 24px;
