@@ -462,7 +462,8 @@ h3 { font-size: 1.3rem; }
    ============================================ */
 
 .page-header {
-  background: linear-gradient(160deg, #E8DFD4 0%, var(--sky) 100%);
+  background: linear-gradient(160deg, rgba(232, 223, 212, 0.85) 0%, rgba(168, 200, 216, 0.8) 100%),
+              url('../images/hero-sky.jpg') center/cover no-repeat;
   color: var(--navy);
   padding: 72px 0 52px;
   text-align: center;
