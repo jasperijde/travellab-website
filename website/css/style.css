@@ -645,6 +645,69 @@ h3 { font-size: 1.3rem; }
   box-shadow: 0 6px 24px rgba(42, 171, 179, 0.45);
 }
 
+/* --- Hypothesis cards --- */
+.hypothesis-card {
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  margin: 20px 0;
+  border-left: 4px solid;
+}
+
+.hypothesis-card.confirmed {
+  background: rgba(42, 171, 179, 0.08);
+  border-left-color: var(--teal);
+}
+
+.hypothesis-card.partial {
+  background: rgba(240, 160, 48, 0.08);
+  border-left-color: var(--orange);
+}
+
+.hypothesis-card.inconclusive {
+  background: rgba(102, 102, 102, 0.08);
+  border-left-color: var(--text-light);
+}
+
+.hypothesis-tag {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--navy);
+}
+
+.hypothesis-status {
+  float: right;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+.confirmed .hypothesis-status {
+  background: var(--teal);
+  color: var(--white);
+}
+
+.partial .hypothesis-status {
+  background: var(--orange);
+  color: var(--white);
+}
+
+.inconclusive .hypothesis-status {
+  background: var(--text-light);
+  color: var(--white);
+}
+
+.hypothesis-card p {
+  margin-top: 12px;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
 /* --- Stats row responsive --- */
 @media (max-width: 600px) {
   .stats-row {
