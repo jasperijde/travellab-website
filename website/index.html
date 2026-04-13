@@ -6,6 +6,8 @@
   <title>Travel Lab | Prepare. Connect. Explore.</title>
   <meta name="description" content="Travel Lab helps you prepare for your travels with destination safety info, cultural insights, vaccination guides, and a global traveler community.">
   <link rel="stylesheet" href="css/style.css">
+  <!-- Leaflet.js for interactive map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +27,7 @@
       </button>
       <ul class="navbar-links">
         <li><a href="/" class="active">Home</a></li>
+        <li><a href="#explore">Explore</a></li>
         <li><a href="/blog/">Blog</a></li>
       </ul>
     </div>
@@ -39,6 +42,19 @@
         Everything you need to prepare for your next adventure, from destination safety and cultural insights to health info and a community of fellow travelers.
       </p>
       <a href="/blog/" class="hero-cta">Read Our Blog</a>
+    </div>
+  </section>
+
+  <!-- ====== EXPLORE MAP ====== -->
+  <section class="explore-section" id="explore">
+    <div class="container">
+      <h2>Explore Destinations</h2>
+      <p class="explore-subtitle">Click on a highlighted country to view visa requirements, health info, safety advisories, and more. Hover to preview.</p>
+      <div id="world-map"></div>
+      <div class="explore-countries">
+        <p class="explore-available">Available destinations:</p>
+        <div class="explore-country-list" id="country-list"></div>
+      </div>
     </div>
   </section>
 
@@ -129,11 +145,69 @@
         <p>&copy; 2026 Travel Lab. A project by Erasmus University students.</p>
         <ul class="footer-links">
           <li><a href="/">Home</a></li>
+          <li><a href="#explore">Explore</a></li>
           <li><a href="/blog/">Blog</a></li>
         </ul>
       </div>
     </div>
   </footer>
+
+  <!-- Leaflet.js -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/data.js"></script>
+  <script>
+  (function() {
+    /* ---- Country list below map ---- */
+    const listEl = document.getElementById('country-list');
+    COUNTRY_LIST.forEach(c => {
+      const a = document.createElement('a');
+      a.href = '/explore/country.html?id=' + c.id;
+      a.className = 'explore-country-chip';
+      a.textContent = c.flag + ' ' + c.name;
+      listEl.appendChild(a);
+    });
+
+    /* ---- Leaflet Map ---- */
+    const map = L.map('world-map', {
+      center: [20, 60],
+      zoom: 2,
+      minZoom: 2,
+      maxZoom: 6,
+      scrollWheelZoom: false,
+      worldCopyJump: true
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).addTo(map);
+
+    /* ---- Add markers for available countries ---- */
+    COUNTRY_LIST.forEach(c => {
+      const icon = L.divIcon({
+        className: 'map-marker',
+        html: '<span class="map-marker-dot"></span>',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+      });
+
+      const marker = L.marker([c.lat, c.lng], { icon: icon }).addTo(map);
+
+      marker.bindPopup(`
+        <div class="map-popup">
+          <strong>${c.flag} ${c.name}</strong>
+          <p>${c.region}</p>
+          <p class="map-popup-summary">${c.summary.substring(0, 100)}...</p>
+          <a href="/explore/country.html?id=${c.id}">View full guide &rarr;</a>
+        </div>
+      `, { maxWidth: 260 });
+
+      marker.on('mouseover', function() { this.openPopup(); });
+    });
+
+  })();
+  </script>
 
 </body>
 </html>

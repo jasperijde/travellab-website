@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destination | Travel Lab</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ====== NAVBAR ====== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="navbar-logo">
+        <img src="../images/logo.png" alt="Travel Lab logo">
+        <span>Travel Lab</span>
+      </a>
+      <button class="menu-toggle" onclick="document.querySelector('.navbar-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#explore" class="active">Explore</a></li>
+        <li><a href="/blog/">Blog</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ====== PASSPORT SELECTOR ====== -->
+  <div class="passport-bar">
+    <div class="container">
+      <label for="passport-select">Your passport:</label>
+      <select id="passport-select"></select>
+      <span class="passport-hint">Visa info updates based on your nationality</span>
+    </div>
+  </div>
+
+  <!-- ====== COUNTRY HERO ====== -->
+  <section class="country-hero" id="country-hero">
+    <div class="container">
+      <a href="/#explore" class="back-link">&larr; Back to map</a>
+      <div class="country-hero-content">
+        <span class="country-flag" id="country-flag"></span>
+        <div>
+          <h1 id="country-name">Loading...</h1>
+          <p class="country-region" id="country-region"></p>
+        </div>
+      </div>
+      <div class="country-stats" id="country-stats"></div>
+      <p class="country-summary" id="country-summary"></p>
+    </div>
+  </section>
+
+  <!-- ====== SECTION NAV ====== -->
+  <nav class="section-nav">
+    <div class="container">
+      <a href="#visa-section" class="section-nav-link active" data-section="visa">Visa & Entry</a>
+      <a href="#health-section" class="section-nav-link" data-section="health">Health</a>
+      <a href="#safety-section" class="section-nav-link" data-section="safety">Safety</a>
+      <a href="#culture-section" class="section-nav-link" data-section="culture">Culture</a>
+      <a href="#booking-section" class="section-nav-link" data-section="booking">Bookings</a>
+      <a href="#practical-section" class="section-nav-link" data-section="practical">Practical</a>
+    </div>
+  </nav>
+
+  <!-- ====== CONTENT SECTIONS ====== -->
+  <main class="country-content">
+    <div class="container">
+
+      <!-- VISA & ENTRY -->
+      <section id="visa-section" class="info-section">
+        <p class="section-label">Visa & Entry Requirements</p>
+        <h2>Entry information for your passport</h2>
+        <div id="visa-content"></div>
+      </section>
+
+      <!-- HEALTH & VACCINATIONS -->
+      <section id="health-section" class="info-section">
+        <p class="section-label">Health & Vaccinations</p>
+        <h2>What you need to stay healthy</h2>
+        <div id="health-content"></div>
+      </section>
+
+      <!-- SAFETY -->
+      <section id="safety-section" class="info-section">
+        <p class="section-label">Safety & Advisory</p>
+        <h2>How safe is this destination?</h2>
+        <div id="safety-content"></div>
+      </section>
+
+      <!-- CULTURE -->
+      <section id="culture-section" class="info-section">
+        <p class="section-label">Cultural Readiness</p>
+        <h2>What to know before you go</h2>
+        <div id="culture-content"></div>
+      </section>
+
+      <!-- ADVANCE BOOKING -->
+      <section id="booking-section" class="info-section">
+        <p class="section-label">Advance Booking & Practical Prep</p>
+        <h2>Don't get caught out</h2>
+        <div id="booking-content"></div>
+      </section>
+
+      <!-- PRACTICAL INFO -->
+      <section id="practical-section" class="info-section">
+        <p class="section-label">Practical Information</p>
+        <h2>Day-to-day essentials</h2>
+        <div id="practical-content"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ====== SOURCE TOOLTIP ====== -->
+  <div class="source-tooltip" id="source-tooltip">
+    <div class="source-tooltip-name"></div>
+    <div class="source-tooltip-date"></div>
+    <a class="source-tooltip-link" href="#" target="_blank" rel="noopener">View source &nearr;</a>
+  </div>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2026 Travel Lab &middot; Prepare. Connect. Explore. &middot; RSM Erasmus University Rotterdam</p>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/#explore">Explore</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/data.js"></script>
+  <script>
+  (function() {
+    /* ---- Helpers ---- */
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    function getParam(name) {
+      return new URLSearchParams(window.location.search).get(name);
+    }
+
+    function sourced(text, source) {
+      if (!source) return text;
+      return `<span class="sourced" data-source-name="${esc(source.name)}" data-source-url="${esc(source.url)}" data-source-date="${esc(source.verified)}">${text}<span class="source-icon" title="View source">i</span></span>`;
+    }
+
+    function esc(str) {
+      const d = document.createElement('div');
+      d.textContent = str || '';
+      return d.innerHTML;
+    }
+
+    /* ---- Passport selector ---- */
+    const passportSelect = $('#passport-select');
+    PASSPORT_OPTIONS.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.code;
+      opt.textContent = `${p.flag} ${p.name}`;
+      passportSelect.appendChild(opt);
+    });
+
+    const saved = localStorage.getItem('travellab_passport');
+    if (saved && PASSPORT_OPTIONS.find(p => p.code === saved)) {
+      passportSelect.value = saved;
+    } else {
+      passportSelect.value = 'NL';
+    }
+
+    passportSelect.addEventListener('change', () => {
+      localStorage.setItem('travellab_passport', passportSelect.value);
+      renderVisa();
+    });
+
+    /* ---- Load country ---- */
+    const countryId = getParam('id');
+    const country = countryId ? TRAVEL_DATA[countryId] : null;
+
+    if (!country) {
+      $('.country-content').innerHTML = `
+        <div class="container" style="padding: 80px 24px; text-align: center;">
+          <h2>Country not found</h2>
+          <p style="margin: 16px 0;">We don't have data for this destination yet.</p>
+          <a href="/#explore" class="hero-cta" style="display: inline-block; margin-top: 16px;">Back to the map</a>
+        </div>`;
+      $('.section-nav').style.display = 'none';
+      $('#country-hero').innerHTML = '';
+      document.title = 'Destination Not Found | Travel Lab';
+      return;
+    }
+
+    /* ---- Page title ---- */
+    document.title = `${country.name} Travel Guide | Travel Lab`;
+
+    /* ---- Hero ---- */
+    $('#country-flag').textContent = country.flag;
+    $('#country-name').textContent = country.name;
+    $('#country-region').textContent = country.region;
+    $('#country-summary').textContent = country.summary;
+    $('#country-stats').innerHTML = `
+      <div class="country-stat"><strong>Capital</strong>${esc(country.capital)}</div>
+      <div class="country-stat"><strong>Currency</strong>${esc(country.currency)}</div>
+      <div class="country-stat"><strong>Language</strong>${esc(country.language)}</div>
+    `;
+
+    /* ---- Visa ---- */
+    function renderVisa() {
+      const passport = passportSelect.value;
+      const visa = country.visa[passport];
+      const source = country.visa.source;
+      if (!visa) {
+        $('#visa-content').innerHTML = '<p>No visa data available for this passport.</p>';
+        return;
+      }
+
+      const typeColors = {
+        'Visa-Free': 'var(--teal)',
+        'Visa on Arrival': 'var(--orange)',
+        'eVisa': 'var(--blue)',
+        'Visa Required': '#d9534f',
+        'No visa needed': 'var(--teal)'
+      };
+      const color = typeColors[visa.type] || 'var(--text-light)';
+
+      $('#visa-content').innerHTML = `
+        <div class="info-card-large">
+          <div class="visa-badge" style="background: ${color}">${esc(visa.type)}</div>
+          <div class="visa-details">
+            <div class="visa-duration"><strong>Duration:</strong> ${sourced(esc(visa.duration), source)}</div>
+            <p class="visa-notes">${sourced(esc(visa.notes), source)}</p>
+          </div>
+        </div>
+        <div class="passport-compare-hint">
+          <p>Travelling with someone who holds a different passport? Change the passport selector above to compare requirements.</p>
+        </div>
+      `;
+    }
+    renderVisa();
+
+    /* ---- Health ---- */
+    const healthHTML = country.health.map(h => `
+      <div class="info-card">
+        <div class="info-card-header">
+          <h3>${esc(h.name)}</h3>
+          <span class="badge ${h.status === 'Required' ? 'badge-required' : 'badge-recommended'}">${h.status}</span>
+        </div>
+        <p>${sourced(esc(h.description), h.source)}</p>
+        ${h.cost ? `<p class="info-cost">${sourced('Estimated cost: ~\u20ac' + h.cost, h.source)}</p>` : ''}
+      </div>
+    `).join('');
+    $('#health-content').innerHTML = healthHTML;
+
+    /* ---- Safety ---- */
+    const safetyColors = { 1: '#27ae60', 2: '#f1c40f', 3: '#e67e22', 4: '#e74c3c' };
+    const safetyLabels = { 1: 'Low Risk', 2: 'Exercise Caution', 3: 'Elevated Risk', 4: 'High Risk' };
+    const s = country.safety;
+    let safetyHTML = `
+      <div class="safety-display">
+        <div class="safety-level" style="background: ${safetyColors[s.level]}">
+          <span class="safety-level-number">${s.level}</span>
+          <span class="safety-level-label">${safetyLabels[s.level]}</span>
+        </div>
+        <div class="safety-description">
+          <p>${sourced(esc(s.description), s.source)}</p>
+        </div>
+      </div>
+    `;
+    if (s.insurance_warning) {
+      safetyHTML += `
+        <div class="insurance-warning">
+          <strong>Insurance Warning</strong>
+          <p>${sourced(esc(s.insurance_note), s.source)}</p>
+        </div>
+      `;
+    }
+    $('#safety-content').innerHTML = safetyHTML;
+
+    /* ---- Culture ---- */
+    const cultureHTML = country.culture.map(c => `
+      <div class="info-card">
+        <h3>${esc(c.title)}</h3>
+        <p>${sourced(esc(c.description), c.source)}</p>
+      </div>
+    `).join('');
+    $('#culture-content').innerHTML = cultureHTML;
+
+    /* ---- Advance Booking ---- */
+    const bookingHTML = country.booking.map(b => `
+      <div class="info-card">
+        <div class="info-card-header">
+          <h3>${esc(b.name)}</h3>
+          <span class="badge badge-leadtime">${esc(b.lead_time)}</span>
+        </div>
+        <p>${sourced(esc(b.description), b.source)}</p>
+        ${b.booking_url ? `<a href="${esc(b.booking_url)}" target="_blank" rel="noopener" class="booking-link">Book now &nearr;</a>` : ''}
+      </div>
+    `).join('');
+    $('#booking-content').innerHTML = bookingHTML;
+
+    /* ---- Practical ---- */
+    const pr = country.practical;
+    $('#practical-content').innerHTML = `
+      <div class="practical-grid">
+        <div class="info-card">
+          <h3>Plug & Power</h3>
+          <p>${sourced(esc(pr.plug_type.value), pr.plug_type.source)}</p>
+        </div>
+        <div class="info-card">
+          <h3>eSIM & Connectivity</h3>
+          <p>${sourced(esc(pr.esim.value), pr.esim.source)}</p>
+        </div>
+        <div class="info-card">
+          <h3>Getting Around</h3>
+          <p>${sourced(esc(pr.transport.value), pr.transport.source)}</p>
+        </div>
+      </div>
+    `;
+
+    /* ---- Source Tooltip ---- */
+    const tooltip = $('#source-tooltip');
+    let tooltipTimeout;
+
+    document.addEventListener('mouseover', (e) => {
+      const el = e.target.closest('.sourced');
+      if (!el) return;
+      clearTimeout(tooltipTimeout);
+
+      const name = el.dataset.sourceName;
+      const url = el.dataset.sourceUrl;
+      const date = el.dataset.sourceDate;
+
+      tooltip.querySelector('.source-tooltip-name').textContent = name;
+      tooltip.querySelector('.source-tooltip-date').textContent = 'Verified: ' + date;
+      tooltip.querySelector('.source-tooltip-link').href = url;
+
+      const rect = el.getBoundingClientRect();
+      tooltip.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+      tooltip.style.left = Math.min(rect.left + window.scrollX, window.innerWidth - 300) + 'px';
+      tooltip.classList.add('visible');
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      const el = e.target.closest('.sourced');
+      if (!el) return;
+      const related = e.relatedTarget;
+      if (related && (related.closest('.sourced') === el || related.closest('.source-tooltip'))) return;
+      tooltipTimeout = setTimeout(() => tooltip.classList.remove('visible'), 200);
+    });
+
+    tooltip.addEventListener('mouseover', () => clearTimeout(tooltipTimeout));
+    tooltip.addEventListener('mouseout', () => {
+      tooltipTimeout = setTimeout(() => tooltip.classList.remove('visible'), 200);
+    });
+
+    /* ---- Section nav highlight on scroll ---- */
+    const sections = $$('.info-section');
+    const navLinks = $$('.section-nav-link');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 160) {
+          current = sec.id;
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    });
+
+  })();
+  </script>
+
+</body>
+</html>

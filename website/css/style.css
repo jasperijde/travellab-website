@@ -708,6 +708,526 @@ h3 { font-size: 1.3rem; }
   color: var(--text);
 }
 
+/* ============================================
+   EXPLORE MAP SECTION
+   ============================================ */
+
+.explore-section {
+  padding: 80px 0 60px;
+  background: var(--white);
+}
+
+.explore-section h2 {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.explore-subtitle {
+  text-align: center;
+  color: var(--text-light);
+  margin-bottom: 32px;
+  font-size: 1.05rem;
+}
+
+#world-map {
+  height: 450px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  z-index: 1;
+}
+
+.map-marker-dot {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: var(--teal);
+  border: 3px solid var(--white);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  margin: 3px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(42, 171, 179, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(42, 171, 179, 0); }
+}
+
+.map-popup {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.map-popup strong {
+  font-size: 1rem;
+  color: var(--navy);
+}
+
+.map-popup p {
+  margin: 4px 0;
+  color: var(--text-light);
+}
+
+.map-popup-summary {
+  font-size: 0.82rem;
+}
+
+.map-popup a {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--teal);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.explore-countries {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.explore-available {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 12px;
+}
+
+.explore-country-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.explore-country-chip {
+  display: inline-block;
+  background: var(--light-bg);
+  border: 1px solid rgba(0,0,0,0.08);
+  padding: 8px 18px;
+  border-radius: 50px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--navy);
+  transition: all 0.2s;
+}
+
+.explore-country-chip:hover {
+  background: var(--teal);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   COUNTRY PAGE STYLES
+   ============================================ */
+
+/* Passport selector bar */
+.passport-bar {
+  background: var(--navy);
+  color: var(--white);
+  padding: 12px 0;
+  position: sticky;
+  top: 65px;
+  z-index: 90;
+}
+
+.passport-bar .container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.passport-bar label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+#passport-select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  background: var(--white);
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.passport-hint {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Country hero */
+.country-hero {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+  color: var(--white);
+  padding: 40px 0 48px;
+}
+
+.country-hero .back-link {
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 16px;
+}
+
+.country-hero .back-link:hover {
+  color: var(--white);
+}
+
+.country-hero-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.country-flag {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.country-hero h1 {
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.country-region {
+  opacity: 0.8;
+  font-size: 1.1rem;
+}
+
+.country-stats {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.country-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.95rem;
+}
+
+.country-stat strong {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+.country-summary {
+  font-size: 1.05rem;
+  opacity: 0.9;
+  line-height: 1.7;
+  max-width: 800px;
+}
+
+/* Section nav (sticky tabs) */
+.section-nav {
+  background: var(--white);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  position: sticky;
+  top: 107px;
+  z-index: 80;
+  overflow-x: auto;
+}
+
+.section-nav .container {
+  display: flex;
+  gap: 0;
+}
+
+.section-nav-link {
+  padding: 14px 20px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-light);
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.section-nav-link:hover {
+  color: var(--navy);
+}
+
+.section-nav-link.active {
+  color: var(--teal);
+  border-bottom-color: var(--teal);
+}
+
+/* Country content sections */
+.country-content {
+  padding: 20px 0 60px;
+}
+
+.info-section {
+  padding: 40px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  max-width: 800px;
+}
+
+.info-section:last-child {
+  border-bottom: none;
+}
+
+.info-section h2 {
+  margin-bottom: 24px;
+}
+
+/* Info cards (reusable) */
+.info-card {
+  background: var(--light-bg);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.info-card h3 {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+}
+
+.info-card p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.info-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.info-card-header h3 {
+  margin-bottom: 0;
+}
+
+/* Large info card (visa) */
+.info-card-large {
+  background: var(--light-bg);
+  border-radius: var(--radius);
+  padding: 32px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.visa-badge {
+  color: var(--white);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 20px;
+  border-radius: 50px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.visa-details {
+  flex: 1;
+}
+
+.visa-duration {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+
+.visa-notes {
+  font-size: 0.95rem;
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+.passport-compare-hint {
+  margin-top: 16px;
+  padding: 12px 20px;
+  background: rgba(42, 171, 179, 0.08);
+  border-radius: var(--radius);
+  font-size: 0.88rem;
+  color: var(--text-light);
+}
+
+/* Badges */
+.badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.badge-required {
+  background: #e74c3c;
+  color: var(--white);
+}
+
+.badge-recommended {
+  background: var(--teal);
+  color: var(--white);
+}
+
+.badge-leadtime {
+  background: var(--orange);
+  color: var(--white);
+}
+
+.info-cost {
+  margin-top: 8px;
+  font-weight: 600;
+  color: var(--navy) !important;
+  font-size: 0.9rem !important;
+}
+
+/* Safety display */
+.safety-display {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.safety-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius);
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.safety-level-number {
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.safety-level-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.safety-description p {
+  font-size: 0.98rem;
+  line-height: 1.8;
+}
+
+.insurance-warning {
+  margin-top: 20px;
+  background: #fef3cd;
+  border-left: 4px solid #e67e22;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 20px 24px;
+}
+
+.insurance-warning strong {
+  color: #e67e22;
+  font-size: 0.95rem;
+}
+
+.insurance-warning p {
+  margin-top: 6px;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* Booking link */
+.booking-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--teal);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.booking-link:hover {
+  color: var(--orange);
+}
+
+/* Practical grid */
+.practical-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Source tooltip */
+.sourced {
+  position: relative;
+  border-bottom: 1px dotted var(--teal);
+  cursor: help;
+}
+
+.source-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  background: var(--teal);
+  color: var(--white);
+  border-radius: 50%;
+  font-size: 0.6rem;
+  font-weight: 700;
+  font-style: normal;
+  margin-left: 4px;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.source-tooltip {
+  position: absolute;
+  z-index: 1000;
+  background: var(--navy);
+  color: var(--white);
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  max-width: 280px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.source-tooltip.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.source-tooltip-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.source-tooltip-date {
+  font-size: 0.78rem;
+  opacity: 0.7;
+  margin-bottom: 8px;
+}
+
+.source-tooltip-link {
+  color: var(--sky) !important;
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.source-tooltip-link:hover {
+  color: var(--orange) !important;
+}
+
 /* --- Stats row responsive --- */
 @media (max-width: 600px) {
   .stats-row {
@@ -763,5 +1283,43 @@ h3 { font-size: 1.3rem; }
   .footer-content {
     flex-direction: column;
     text-align: center;
+  }
+
+  #world-map {
+    height: 300px;
+  }
+
+  .info-card-large {
+    flex-direction: column;
+  }
+
+  .safety-display {
+    flex-direction: column;
+  }
+
+  .practical-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .country-hero-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .country-stats {
+    justify-content: center;
+  }
+
+  .passport-bar .container {
+    flex-wrap: wrap;
+  }
+
+  .passport-hint {
+    display: none;
+  }
+
+  .section-nav-link {
+    padding: 12px 14px;
+    font-size: 0.8rem;
   }
 }
