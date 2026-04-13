@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plan My Trip | Travel Lab</title>
+  <meta name="description" content="Build your travel itinerary and get a personalized preparation timeline with everything you need to do before your trip.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ====== NAVBAR ====== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="navbar-logo">
+        <img src="../images/logo.png" alt="Travel Lab logo">
+        <span>Travel Lab</span>
+      </a>
+      <button class="menu-toggle" onclick="document.querySelector('.navbar-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#explore">Explore</a></li>
+        <li><a href="/planner/" class="active">Plan My Trip</a></li>
+        <li><a href="/blog/">Blog</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ====== PAGE HEADER ====== -->
+  <section class="page-header">
+    <div class="container">
+      <h1>Plan My Trip</h1>
+      <p>Add your destinations and travel date to get a personalized preparation timeline</p>
+    </div>
+  </section>
+
+  <!-- ====== PLANNER FORM ====== -->
+  <section class="planner-form-section">
+    <div class="container">
+      <div class="planner-form">
+
+        <!-- Passport -->
+        <div class="planner-field">
+          <label for="planner-passport">Your passport</label>
+          <select id="planner-passport"></select>
+        </div>
+
+        <!-- Destinations -->
+        <div class="planner-field">
+          <label>Destinations (in order of visit)</label>
+          <div id="destination-list" class="destination-list"></div>
+          <div class="destination-add-row">
+            <select id="add-destination">
+              <option value="">Add a destination...</option>
+            </select>
+            <button id="add-destination-btn" class="btn-add">+ Add</button>
+          </div>
+        </div>
+
+        <!-- Travel date -->
+        <div class="planner-field">
+          <label for="planner-date">Departure date</label>
+          <input type="date" id="planner-date">
+        </div>
+
+        <!-- Generate button -->
+        <button id="generate-btn" class="hero-cta" style="width:100%; text-align:center; border:none; cursor:pointer; font-family: 'Inter', sans-serif;">Generate My Preparation Timeline</button>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== TIMELINE OUTPUT ====== -->
+  <section class="planner-results" id="planner-results" style="display:none;">
+    <div class="container">
+      <h2 id="results-title"></h2>
+      <p class="results-subtitle" id="results-subtitle"></p>
+
+      <!-- Timeline -->
+      <div class="timeline" id="timeline"></div>
+
+      <!-- Per-destination breakdown -->
+      <div id="destination-details"></div>
+    </div>
+  </section>
+
+  <!-- ====== SOURCE TOOLTIP ====== -->
+  <div class="source-tooltip" id="source-tooltip">
+    <div class="source-tooltip-name"></div>
+    <div class="source-tooltip-date"></div>
+    <a class="source-tooltip-link" href="#" target="_blank" rel="noopener">View source &nearr;</a>
+  </div>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2026 Travel Lab &middot; Prepare. Connect. Explore. &middot; RSM Erasmus University Rotterdam</p>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/#explore">Explore</a></li>
+          <li><a href="/planner/">Plan My Trip</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/data.js"></script>
+  <script>
+  (function() {
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => document.querySelectorAll(sel);
+
+    function esc(str) {
+      const d = document.createElement('div');
+      d.textContent = str || '';
+      return d.innerHTML;
+    }
+
+    function sourced(text, source) {
+      if (!source) return text;
+      return `<span class="sourced" data-source-name="${esc(source.name)}" data-source-url="${esc(source.url)}" data-source-date="${esc(source.verified)}">${text}<span class="source-icon" title="View source">i</span></span>`;
+    }
+
+    /* ---- Passport selector ---- */
+    const passportSelect = $('#planner-passport');
+    PASSPORT_OPTIONS.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.code;
+      opt.textContent = `${p.flag} ${p.name}`;
+      passportSelect.appendChild(opt);
+    });
+    const saved = localStorage.getItem('travellab_passport');
+    if (saved) passportSelect.value = saved;
+    passportSelect.addEventListener('change', () => {
+      localStorage.setItem('travellab_passport', passportSelect.value);
+    });
+
+    /* ---- Destination selector ---- */
+    const addSelect = $('#add-destination');
+    Object.values(TRAVEL_DATA).forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = `${c.flag} ${c.name}`;
+      addSelect.appendChild(opt);
+    });
+
+    let selectedDestinations = [];
+
+    function renderDestinations() {
+      const list = $('#destination-list');
+      if (selectedDestinations.length === 0) {
+        list.innerHTML = '<p class="dest-empty">No destinations added yet. Add your first stop above.</p>';
+        return;
+      }
+      list.innerHTML = selectedDestinations.map((id, i) => {
+        const c = TRAVEL_DATA[id];
+        return `<div class="dest-chip">
+          <span class="dest-number">${i + 1}</span>
+          <span>${c.flag} ${c.name}</span>
+          <button class="dest-remove" data-index="${i}" title="Remove">&times;</button>
+        </div>`;
+      }).join('');
+
+      list.querySelectorAll('.dest-remove').forEach(btn => {
+        btn.addEventListener('click', () => {
+          selectedDestinations.splice(parseInt(btn.dataset.index), 1);
+          renderDestinations();
+        });
+      });
+    }
+    renderDestinations();
+
+    $('#add-destination-btn').addEventListener('click', () => {
+      const val = addSelect.value;
+      if (val && !selectedDestinations.includes(val)) {
+        selectedDestinations.push(val);
+        renderDestinations();
+        addSelect.value = '';
+      }
+    });
+
+    /* ---- Set default date to 4 weeks from now ---- */
+    const defaultDate = new Date();
+    defaultDate.setDate(defaultDate.getDate() + 28);
+    $('#planner-date').value = defaultDate.toISOString().split('T')[0];
+
+    /* ---- Generate timeline ---- */
+    $('#generate-btn').addEventListener('click', generate);
+
+    function generate() {
+      const passport = passportSelect.value;
+      const departureStr = $('#planner-date').value;
+      if (selectedDestinations.length === 0) {
+        alert('Please add at least one destination.');
+        return;
+      }
+      if (!departureStr) {
+        alert('Please select a departure date.');
+        return;
+      }
+
+      const departure = new Date(departureStr);
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      const daysUntil = Math.ceil((departure - today) / (1000 * 60 * 60 * 24));
+
+      /* Collect all prep tasks across destinations */
+      const tasks = [];
+
+      selectedDestinations.forEach(id => {
+        const country = TRAVEL_DATA[id];
+        const visa = country.visa[passport];
+        const visaSource = country.visa.source;
+
+        /* Visa tasks */
+        if (visa) {
+          if (visa.type === 'Visa Required') {
+            tasks.push({
+              country: country.name, flag: country.flag, category: 'Visa & Entry',
+              task: `Apply for visa to ${country.name}`,
+              detail: visa.notes,
+              daysBeforeMin: 60, daysBeforeIdeal: 90,
+              urgency: 'high', source: visaSource
+            });
+          } else if (visa.type === 'eVisa') {
+            tasks.push({
+              country: country.name, flag: country.flag, category: 'Visa & Entry',
+              task: `Apply for eVisa for ${country.name}`,
+              detail: visa.notes,
+              daysBeforeMin: 7, daysBeforeIdeal: 21,
+              urgency: 'medium', source: visaSource
+            });
+          } else {
+            tasks.push({
+              country: country.name, flag: country.flag, category: 'Visa & Entry',
+              task: `Check passport validity for ${country.name} (${visa.type}, ${visa.duration})`,
+              detail: visa.notes,
+              daysBeforeMin: 14, daysBeforeIdeal: 30,
+              urgency: 'low', source: visaSource
+            });
+          }
+        }
+
+        /* Health tasks */
+        country.health.forEach(h => {
+          let daysMin = 14, daysIdeal = 42;
+          if (h.status === 'Required') { daysMin = 30; daysIdeal = 60; }
+          tasks.push({
+            country: country.name, flag: country.flag, category: 'Health',
+            task: `${h.status === 'Required' ? 'Get required' : 'Consider'} ${h.name} vaccination`,
+            detail: h.description + (h.cost ? ` (estimated ~\u20ac${h.cost})` : ''),
+            daysBeforeMin: daysMin, daysBeforeIdeal: daysIdeal,
+            urgency: h.status === 'Required' ? 'high' : 'medium', source: h.source
+          });
+        });
+
+        /* Safety check */
+        if (country.safety.insurance_warning) {
+          tasks.push({
+            country: country.name, flag: country.flag, category: 'Safety',
+            task: `Check travel insurance coverage for ${country.name}`,
+            detail: country.safety.insurance_note,
+            daysBeforeMin: 14, daysBeforeIdeal: 30,
+            urgency: 'high', source: country.safety.source
+          });
+        }
+        tasks.push({
+          country: country.name, flag: country.flag, category: 'Safety',
+          task: `Review safety advisory for ${country.name}`,
+          detail: country.safety.description,
+          daysBeforeMin: 7, daysBeforeIdeal: 14,
+          urgency: country.safety.level >= 3 ? 'high' : 'low', source: country.safety.source
+        });
+
+        /* Advance bookings */
+        country.booking.forEach(b => {
+          let daysMin = 7, daysIdeal = 21;
+          const lt = b.lead_time.toLowerCase();
+          if (lt.includes('month')) { daysMin = 30; daysIdeal = 60; }
+          else if (lt.includes('week') || lt.includes('4')) { daysMin = 14; daysIdeal = 28; }
+          else if (lt.includes('before departure') || lt.includes('purchase before')) { daysMin = 14; daysIdeal = 30; }
+          tasks.push({
+            country: country.name, flag: country.flag, category: 'Booking',
+            task: `Book: ${b.name}`,
+            detail: `${b.description} (Lead time: ${b.lead_time})`,
+            daysBeforeMin: daysMin, daysBeforeIdeal: daysIdeal,
+            urgency: daysMin >= 30 ? 'high' : 'medium', source: b.source,
+            bookingUrl: b.booking_url
+          });
+        });
+
+        /* Practical prep */
+        tasks.push({
+          country: country.name, flag: country.flag, category: 'Practical',
+          task: `Get plug adapter for ${country.name}`,
+          detail: country.practical.plug_type.value,
+          daysBeforeMin: 3, daysBeforeIdeal: 14,
+          urgency: 'low', source: country.practical.plug_type.source
+        });
+        tasks.push({
+          country: country.name, flag: country.flag, category: 'Practical',
+          task: `Arrange eSIM or local SIM for ${country.name}`,
+          detail: country.practical.esim.value,
+          daysBeforeMin: 1, daysBeforeIdeal: 7,
+          urgency: 'low', source: country.practical.esim.source
+        });
+        tasks.push({
+          country: country.name, flag: country.flag, category: 'Practical',
+          task: `Research local transport in ${country.name}`,
+          detail: country.practical.transport.value,
+          daysBeforeMin: 1, daysBeforeIdeal: 7,
+          urgency: 'low', source: country.practical.transport.source
+        });
+
+        /* Culture */
+        tasks.push({
+          country: country.name, flag: country.flag, category: 'Culture',
+          task: `Read cultural tips for ${country.name}`,
+          detail: country.culture.map(c => c.title).join(', '),
+          daysBeforeMin: 1, daysBeforeIdeal: 7,
+          urgency: 'low', source: country.culture[0].source
+        });
+      });
+
+      /* Sort by ideal days before (most urgent first) */
+      tasks.sort((a, b) => b.daysBeforeIdeal - a.daysBeforeIdeal);
+
+      /* Group into timeline phases */
+      const phases = [
+        { label: '3+ months before', min: 90, tasks: [] },
+        { label: '1 to 3 months before', min: 30, tasks: [] },
+        { label: '2 to 4 weeks before', min: 14, tasks: [] },
+        { label: '1 to 2 weeks before', min: 7, tasks: [] },
+        { label: 'Final week', min: 0, tasks: [] }
+      ];
+
+      tasks.forEach(t => {
+        const ideal = t.daysBeforeIdeal;
+        if (ideal >= 90) phases[0].tasks.push(t);
+        else if (ideal >= 30) phases[1].tasks.push(t);
+        else if (ideal >= 14) phases[2].tasks.push(t);
+        else if (ideal >= 7) phases[3].tasks.push(t);
+        else phases[4].tasks.push(t);
+      });
+
+      /* Render */
+      const results = $('#planner-results');
+      results.style.display = 'block';
+
+      const passportName = PASSPORT_OPTIONS.find(p => p.code === passport).name;
+      const destNames = selectedDestinations.map(id => TRAVEL_DATA[id].flag + ' ' + TRAVEL_DATA[id].name).join(' \u2192 ');
+      $('#results-title').textContent = 'Your Preparation Timeline';
+      $('#results-subtitle').innerHTML = `
+        <strong>${destNames}</strong><br>
+        Departing ${departure.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+        &middot; ${daysUntil} days from now &middot; ${passportName} passport
+      `;
+
+      /* Check for overdue items */
+      let warnings = '';
+      const overdue = tasks.filter(t => t.daysBeforeMin > daysUntil && t.urgency !== 'low');
+      if (overdue.length > 0) {
+        warnings = `<div class="insurance-warning" style="margin-bottom: 32px;">
+          <strong>Heads up: ${overdue.length} item${overdue.length > 1 ? 's' : ''} may need immediate attention</strong>
+          <p>Based on your departure date, some preparation tasks are past their recommended start date. These are highlighted in the timeline below.</p>
+        </div>`;
+      }
+
+      /* Render timeline */
+      let timelineHTML = warnings;
+      phases.forEach(phase => {
+        if (phase.tasks.length === 0) return;
+        const isOverdue = phase.min > daysUntil;
+        timelineHTML += `
+          <div class="timeline-phase ${isOverdue ? 'timeline-overdue' : ''}">
+            <div class="timeline-phase-header">
+              <span class="timeline-dot ${isOverdue ? 'dot-overdue' : ''}"></span>
+              <h3>${phase.label}${isOverdue ? ' <span class="overdue-tag">Start now!</span>' : ''}</h3>
+            </div>
+            <div class="timeline-tasks">
+              ${phase.tasks.map(t => `
+                <div class="timeline-task urgency-${t.urgency}">
+                  <div class="timeline-task-header">
+                    <span class="timeline-task-country">${t.flag}</span>
+                    <span class="timeline-task-category">${t.category}</span>
+                    ${t.urgency === 'high' ? '<span class="badge badge-required">Important</span>' : ''}
+                  </div>
+                  <h4>${esc(t.task)}</h4>
+                  <p>${sourced(esc(t.detail), t.source)}</p>
+                  ${t.bookingUrl ? `<a href="${esc(t.bookingUrl)}" target="_blank" rel="noopener" class="booking-link">Book now &nearr;</a>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      $('#timeline').innerHTML = timelineHTML;
+
+      /* Scroll to results */
+      results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    /* ---- Source Tooltip (same as country page) ---- */
+    const tooltip = $('#source-tooltip');
+    let tooltipTimeout;
+
+    document.addEventListener('mouseover', (e) => {
+      const el = e.target.closest('.sourced');
+      if (!el) return;
+      clearTimeout(tooltipTimeout);
+      tooltip.querySelector('.source-tooltip-name').textContent = el.dataset.sourceName;
+      tooltip.querySelector('.source-tooltip-date').textContent = 'Verified: ' + el.dataset.sourceDate;
+      tooltip.querySelector('.source-tooltip-link').href = el.dataset.sourceUrl;
+      const rect = el.getBoundingClientRect();
+      tooltip.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+      tooltip.style.left = Math.min(rect.left + window.scrollX, window.innerWidth - 300) + 'px';
+      tooltip.classList.add('visible');
+    });
+
+    document.addEventListener('mouseout', (e) => {
+      const el = e.target.closest('.sourced');
+      if (!el) return;
+      const related = e.relatedTarget;
+      if (related && (related.closest('.sourced') === el || related.closest('.source-tooltip'))) return;
+      tooltipTimeout = setTimeout(() => tooltip.classList.remove('visible'), 200);
+    });
+
+    tooltip.addEventListener('mouseover', () => clearTimeout(tooltipTimeout));
+    tooltip.addEventListener('mouseout', () => {
+      tooltipTimeout = setTimeout(() => tooltip.classList.remove('visible'), 200);
+    });
+
+  })();
+  </script>
+
+</body>
+</html>
