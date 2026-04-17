@@ -27,6 +27,11 @@ const TRAVEL_DATA = {
     lng: 138.2,
     summary: "Japan blends ancient traditions with cutting-edge modernity. From serene temples in Kyoto to the neon-lit streets of Tokyo, it offers an experience unlike anywhere else. Thorough preparation will help you navigate its unique customs and travel systems with ease.",
 
+    images: [
+      { url: "/images/gallery-kyoto.jpg", caption: "Yasaka Pagoda at dusk, Kyoto" },
+      { url: "/images/gallery-cherry.jpg", caption: "Cherry blossoms along the railway in spring" }
+    ],
+
     visa: {
       "NL": { type: "Visa-Free", duration: "90 days", notes: "Valid passport required. No work permitted on tourist entry." },
       "GB": { type: "Visa-Free", duration: "90 days", notes: "Valid passport required. Extension possible at immigration offices." },
@@ -87,6 +92,11 @@ const TRAVEL_DATA = {
     lng: 100.9,
     summary: "Thailand is a favourite destination for travellers of all types, offering tropical beaches, ornate temples, vibrant street food, and warm hospitality. Whether you are visiting Bangkok's bustling markets or the islands of the south, preparation is key to a smooth trip.",
 
+    images: [
+      { url: "/images/gallery-thailand.jpg", caption: "Tropical beaches of southern Thailand" },
+      { url: "/images/gallery-beach.jpg", caption: "Crystal-clear waters of the Gulf of Thailand" }
+    ],
+
     visa: {
       "NL": { type: "Visa-Free", duration: "90 days", notes: "Dutch passport holders receive 90 days visa-free for tourism as of 2024." },
       "GB": { type: "Visa-Free", duration: "60 days", notes: "UK passport holders receive 60 days visa-free. Extendable by 30 days at immigration." },
@@ -146,6 +156,11 @@ const TRAVEL_DATA = {
     lng: 121.8,
     summary: "The Philippines is an archipelago of over 7,000 islands offering stunning beaches, world-class diving, and incredibly warm hospitality. English is widely spoken, making it one of the most accessible destinations in Southeast Asia.",
 
+    images: [
+      { url: "/images/gallery-philippines.jpg", caption: "Pristine white sand beach, Palawan" },
+      { url: "/images/gallery-beach.jpg", caption: "Turquoise waters off the Philippine coast" }
+    ],
+
     visa: {
       "NL": { type: "Visa-Free", duration: "30 days", notes: "Extendable up to 36 months at Bureau of Immigration offices." },
       "GB": { type: "Visa-Free", duration: "30 days", notes: "Extendable at Bureau of Immigration. Return or onward ticket required." },
@@ -204,6 +219,11 @@ const TRAVEL_DATA = {
     lng: 67.0,
     summary: "Kazakhstan is the largest landlocked country in the world, offering vast steppes, futuristic architecture in Astana, the cultural richness of Almaty, and stunning natural landscapes. It is an increasingly popular destination for adventurous travellers.",
 
+    images: [
+      { url: "/images/cta-mountains.jpg", caption: "Aerial view of the Tian Shan mountain range" },
+      { url: "/images/gallery-pool.jpg", caption: "Modern resort overlooking the mountains" }
+    ],
+
     visa: {
       "NL": { type: "Visa-Free", duration: "30 days", notes: "For tourism purposes. Registration with migration police required for stays over 30 days." },
       "GB": { type: "Visa-Free", duration: "30 days", notes: "For tourism purposes. Must register within 3 days of arrival if staying at a private residence." },
@@ -261,6 +281,11 @@ const TRAVEL_DATA = {
     lng: 108.3,
     summary: "Vietnam captivates with its stunning landscapes, from the limestone karsts of Ha Long Bay to the terraced rice fields of Sapa. Its rich history, incredible street food, and affordable prices make it one of Southeast Asia's most rewarding destinations.",
 
+    images: [
+      { url: "/images/gallery-china.jpg", caption: "Ancient waterway town near Hoi An" },
+      { url: "/images/gallery-vietnam-jungle.jpg", caption: "Tropical jungle landscape of northern Vietnam" }
+    ],
+
     visa: {
       "NL": { type: "eVisa", duration: "90 days", notes: "Apply online at the official eVisa portal. Single entry. Processing takes approximately 3 business days." },
       "GB": { type: "eVisa", duration: "90 days", notes: "Apply online. Multiple entry available. Processing takes approximately 3 business days." },
@@ -298,7 +323,7 @@ const TRAVEL_DATA = {
     booking: [
       { name: "Ha Long Bay Cruises", description: "Overnight cruises on Ha Long Bay are one of Vietnam's most popular experiences. Quality boats fill up weeks in advance during peak season (October to April).", lead_time: "2 to 4 weeks", booking_url: null, source: { name: "Vietnam National Administration of Tourism", url: "https://vietnam.travel/", verified: "2026-04-06" } },
       { name: "Sapa Trekking Permits", description: "Some trekking routes in the Hoang Lien Son area require permits. Tour operators typically arrange these, but book your trek at least a few days ahead.", lead_time: "3 to 5 days", booking_url: null, source: { name: "Vietnam National Administration of Tourism", url: "https://vietnam.travel/", verified: "2026-04-06" } },
-      { name: "Reunification Express Train", description: "The scenic train from Hanoi to Ho Chi Minh City (or sections of it) is popular and sleeper berths sell out in advance, especially around Vietnamese holidays.", lead_time: "1 to 2 weeks", booking_url: "https://www.vr.com.vn/en", source: { name: "Vietnam Railways", url: "https://www.vr.com.vn/en", verified: "2026-04-06" } },
+      { name: "Reunification Express Train", description: "The scenic train from Hanoi to Ho Chi Minh City (or sections of it) is popular and sleeper berths sell out in advance, especially around Vietnamese holidays.", lead_time: "1 to 2 weeks", booking_url: "https://dsvn.vn/en", source: { name: "Vietnam Railways", url: "https://dsvn.vn/en", verified: "2026-04-06" } },
       { name: "Cu Chi Tunnels", description: "Guided tours to the Cu Chi Tunnels from Ho Chi Minh City are very popular. Small-group tours offer a better experience but book out faster.", lead_time: "2 to 3 days", booking_url: null, source: { name: "Vietnam National Administration of Tourism", url: "https://vietnam.travel/", verified: "2026-04-06" } }
     ],
 

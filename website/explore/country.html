@@ -52,6 +52,8 @@
       </div>
       <div class="country-stats" id="country-stats"></div>
       <p class="country-summary" id="country-summary"></p>
+      <!-- Photo gallery populated by JS -->
+      <div id="country-gallery" class="country-gallery"></div>
     </div>
   </section>
 
@@ -206,6 +208,17 @@
     $('#country-name').textContent = country.name;
     $('#country-region').textContent = country.region;
     $('#country-summary').textContent = country.summary;
+
+    /* ---- Photo gallery ---- */
+    if (country.images && country.images.length > 0) {
+      $('#country-gallery').innerHTML = country.images.map(img => `
+        <div class="country-gallery-item">
+          <img src="${esc(img.url)}" alt="${esc(img.caption)}" loading="lazy">
+          <p class="gallery-caption">${esc(img.caption)}</p>
+        </div>
+      `).join('');
+    }
+
     $('#country-stats').innerHTML = `
       <div class="country-stat"><strong>Capital</strong>${esc(country.capital)}</div>
       <div class="country-stat"><strong>Currency</strong>${esc(country.currency)}</div>
