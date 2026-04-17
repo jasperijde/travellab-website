@@ -713,6 +713,55 @@ h3 { font-size: 1.3rem; }
   font-style: normal;
 }
 
+/* --- Video embed --- */
+.video-embed-wrapper {
+  margin: 40px 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.video-embed-wrapper iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  display: block;
+}
+
+.video-placeholder {
+  background: linear-gradient(135deg, var(--light-bg), var(--sky));
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-placeholder-inner {
+  text-align: center;
+  color: var(--navy);
+}
+
+.video-icon {
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.video-placeholder-inner p {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.video-placeholder-sub {
+  font-size: 0.85rem !important;
+  opacity: 0.6;
+  font-weight: 300 !important;
+  font-family: var(--font-body) !important;
+}
+
 /* --- Highlight box --- */
 .highlight-box {
   background: var(--glass);
