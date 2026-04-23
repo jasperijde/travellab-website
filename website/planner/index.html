@@ -371,10 +371,9 @@
           <label>Destinations (in order of visit)</label>
           <div id="destination-list" class="destination-list"></div>
           <div class="destination-add-row">
-            <select id="add-destination">
-              <option value="">Add a destination...</option>
+            <select id="add-destination" style="flex:1;">
+              <option value="">Select a destination to add...</option>
             </select>
-            <button id="add-destination-btn" class="btn-add">+ Add</button>
           </div>
         </div>
 
@@ -553,7 +552,7 @@
             </div>
             <div class="dest-chip-date-field">
               <label for="departure-${i}">Departure</label>
-              <input type="date" id="departure-${i}" class="chip-departure" data-index="${i}" value="${dest.departure || ''}">
+              <input type="date" id="departure-${i}" class="chip-departure" data-index="${i}" value="${dest.departure || ''}" min="${dest.arrival || ''}">
             </div>
           </div>
           <button class="dest-remove" data-index="${i}" title="Remove">&times;</button>
@@ -562,7 +561,18 @@
 
       list.querySelectorAll('.chip-arrival').forEach(input => {
         input.addEventListener('change', () => {
-          selectedDestinations[parseInt(input.dataset.index)].arrival = input.value;
+          const idx = parseInt(input.dataset.index);
+          selectedDestinations[idx].arrival = input.value;
+          /* Update the departure min so it can't be before arrival */
+          const depInput = document.getElementById(`departure-${idx}`);
+          if (depInput) {
+            depInput.min = input.value;
+            /* If departure is now before arrival, clear it */
+            if (depInput.value && depInput.value < input.value) {
+              depInput.value = '';
+              selectedDestinations[idx].departure = '';
+            }
+          }
         });
       });
       list.querySelectorAll('.chip-departure').forEach(input => {
@@ -585,10 +595,13 @@
     }
     renderDestinations();
 
-    $('#add-destination-btn').addEventListener('click', () => {
+    addSelect.addEventListener('change', () => {
       const val = addSelect.value;
       if (!val) return;
-      if (selectedDestinations.some(d => d.id === val)) return;
+      if (selectedDestinations.some(d => d.id === val)) {
+        addSelect.value = '';
+        return;
+      }
       selectedDestinations.push({ id: val, arrival: '', departure: '' });
       renderDestinations();
       addSelect.value = '';
