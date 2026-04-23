@@ -65,8 +65,8 @@
       <a href="#safety-section" class="section-nav-link" data-section="safety">Safety</a>
       <a href="#laws-section" class="section-nav-link" data-section="laws">Laws & Scams</a>
       <a href="#culture-section" class="section-nav-link" data-section="culture">Culture</a>
-      <a href="#booking-section" class="section-nav-link" data-section="booking">Bookings</a>
       <a href="#practical-section" class="section-nav-link" data-section="practical">Practical</a>
+      <a href="#booking-section" class="section-nav-link" data-section="booking">Bookings</a>
     </div>
   </nav>
 
@@ -109,18 +109,18 @@
         <div id="culture-content"></div>
       </section>
 
-      <!-- ADVANCE BOOKING -->
-      <section id="booking-section" class="info-section">
-        <p class="section-label">Advance Booking & Practical Prep</p>
-        <h2>Don't get caught out</h2>
-        <div id="booking-content"></div>
-      </section>
-
       <!-- PRACTICAL INFO -->
       <section id="practical-section" class="info-section">
         <p class="section-label">Practical Information</p>
         <h2>Day-to-day essentials</h2>
         <div id="practical-content"></div>
+      </section>
+
+      <!-- ADVANCE BOOKING -->
+      <section id="booking-section" class="info-section">
+        <p class="section-label">Advance Booking</p>
+        <h2>Things worth booking ahead</h2>
+        <div id="booking-content"></div>
       </section>
 
     </div>
@@ -277,17 +277,32 @@
     renderVisa();
 
     /* ---- Health ---- */
-    const healthHTML = country.health.map(h => `
-      <div class="info-card">
+    const mandatoryVax = country.health.filter(h => h.status === 'Required');
+    const recommendedVax = country.health.filter(h => h.status !== 'Required');
+    const hasBoth = mandatoryVax.length > 0 && recommendedVax.length > 0;
+
+    function renderHealthCard(h) {
+      const isMandatory = h.status === 'Required';
+      return `<div class="info-card" style="${isMandatory ? 'border-left: 4px solid #C45C5C;' : ''}">
         <div class="info-card-header">
           <h3>${esc(h.name)}</h3>
-          <span class="badge ${h.status === 'Required' ? 'badge-required' : 'badge-recommended'}">${h.status === 'Required' ? 'Mandatory' : 'Recommended'}</span>
+          <span class="badge ${isMandatory ? 'badge-required' : 'badge-recommended'}">${isMandatory ? 'Mandatory' : 'Recommended'}</span>
         </div>
         <p>${sourced(esc(h.description), h.source)}</p>
         ${h.cost ? `<p class="info-cost">${sourced('Estimated cost: ~\u20ac' + h.cost, h.source)}</p>` : ''}
         ${h.booking_url ? `<a href="${esc(h.booking_url)}" target="_blank" rel="noopener" class="booking-link">Where to book &nearr;</a>` : ''}
-      </div>
-    `).join('');
+      </div>`;
+    }
+
+    let healthHTML = '';
+    if (hasBoth) {
+      healthHTML += `<p class="health-group-label" style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#C45C5C;margin-bottom:10px;">Required before entry</p>`;
+      healthHTML += mandatoryVax.map(renderHealthCard).join('');
+      healthHTML += `<p class="health-group-label" style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);margin:22px 0 10px;">Recommended for this destination</p>`;
+      healthHTML += recommendedVax.map(renderHealthCard).join('');
+    } else {
+      healthHTML += country.health.map(renderHealthCard).join('');
+    }
     $('#health-content').innerHTML = healthHTML;
 
     /* ---- Safety ---- */
