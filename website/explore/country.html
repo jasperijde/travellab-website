@@ -63,6 +63,7 @@
       <a href="#visa-section" class="section-nav-link active" data-section="visa">Visa & Entry</a>
       <a href="#health-section" class="section-nav-link" data-section="health">Health</a>
       <a href="#safety-section" class="section-nav-link" data-section="safety">Safety</a>
+      <a href="#laws-section" class="section-nav-link" data-section="laws">Laws & Scams</a>
       <a href="#culture-section" class="section-nav-link" data-section="culture">Culture</a>
       <a href="#booking-section" class="section-nav-link" data-section="booking">Bookings</a>
       <a href="#practical-section" class="section-nav-link" data-section="practical">Practical</a>
@@ -94,6 +95,13 @@
         <div id="safety-content"></div>
       </section>
 
+      <!-- LOCAL LAWS & LEGALITY -->
+      <section id="laws-section" class="info-section">
+        <p class="section-label">Local Laws & Legality</p>
+        <h2>What you need to know before you go</h2>
+        <div id="laws-content"></div>
+      </section>
+
       <!-- CULTURE -->
       <section id="culture-section" class="info-section">
         <p class="section-label">Cultural Readiness</p>
@@ -117,6 +125,15 @@
 
     </div>
   </main>
+
+  <!-- ====== DISCLAIMER ====== -->
+  <div style="background: var(--sand); padding: 0 0 48px;">
+    <div class="container">
+      <div style="max-width:800px; padding: 20px 24px; background: rgba(123,167,190,0.07); border: 1px solid rgba(123,167,190,0.2); border-radius: 24px; font-size: 0.82rem; color: var(--text-light); line-height: 1.7;">
+        <strong style="color: var(--navy);">Important disclaimer:</strong> Travel Lab compiles information from official government and health sources. While every data point is verified, visa rules, health requirements, and safety advisories can change at short notice. Always perform a final check with the destination country's official immigration authority, your embassy, or a qualified travel health professional before departure. Travel Lab accepts no liability for decisions made based on this information.
+      </div>
+    </div>
+  </div>
 
   <!-- ====== SOURCE TOOLTIP ====== -->
   <div class="source-tooltip" id="source-tooltip">
@@ -264,10 +281,11 @@
       <div class="info-card">
         <div class="info-card-header">
           <h3>${esc(h.name)}</h3>
-          <span class="badge ${h.status === 'Required' ? 'badge-required' : 'badge-recommended'}">${h.status}</span>
+          <span class="badge ${h.status === 'Required' ? 'badge-required' : 'badge-recommended'}">${h.status === 'Required' ? 'Mandatory' : 'Recommended'}</span>
         </div>
         <p>${sourced(esc(h.description), h.source)}</p>
         ${h.cost ? `<p class="info-cost">${sourced('Estimated cost: ~\u20ac' + h.cost, h.source)}</p>` : ''}
+        ${h.booking_url ? `<a href="${esc(h.booking_url)}" target="_blank" rel="noopener" class="booking-link">Where to book &nearr;</a>` : ''}
       </div>
     `).join('');
     $('#health-content').innerHTML = healthHTML;
@@ -319,22 +337,42 @@
     `).join('');
     $('#booking-content').innerHTML = bookingHTML;
 
+    /* ---- Laws ---- */
+    const lawBadge = { danger: { cls: 'badge-required', label: 'Must Know' }, warning: { cls: 'badge-leadtime', label: 'Important' }, info: { cls: 'badge-recommended', label: 'Info' } };
+    const lawsHTML = (country.laws && country.laws.length > 0)
+      ? country.laws.map(l => {
+          const b = lawBadge[l.type] || lawBadge.info;
+          return `<div class="info-card">
+            <div class="info-card-header">
+              <h3>${esc(l.title)}</h3>
+              <span class="badge ${b.cls}">${b.label}</span>
+            </div>
+            <p>${sourced(esc(l.description), l.source)}</p>
+          </div>`;
+        }).join('')
+      : '<p>No specific legal warnings on record for this destination.</p>';
+    $('#laws-content').innerHTML = lawsHTML;
+
     /* ---- Practical ---- */
     const pr = country.practical;
+    const waterCard = pr.water_quality
+      ? `<div class="info-card"><h3>Water Safety</h3><p>${sourced(esc(pr.water_quality.value), pr.water_quality.source)}</p></div>`
+      : '';
     $('#practical-content').innerHTML = `
-      <div class="practical-grid">
+      <div class="practical-grid" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));">
         <div class="info-card">
-          <h3>Plug & Power</h3>
+          <h3>Plug &amp; Power</h3>
           <p>${sourced(esc(pr.plug_type.value), pr.plug_type.source)}</p>
         </div>
         <div class="info-card">
-          <h3>eSIM & Connectivity</h3>
+          <h3>eSIM &amp; Connectivity</h3>
           <p>${sourced(esc(pr.esim.value), pr.esim.source)}</p>
         </div>
         <div class="info-card">
           <h3>Getting Around</h3>
           <p>${sourced(esc(pr.transport.value), pr.transport.source)}</p>
         </div>
+        ${waterCard}
       </div>
     `;
 

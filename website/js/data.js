@@ -10,7 +10,8 @@ const PASSPORT_OPTIONS = [
   { code: "PL", name: "Poland", flag: "\ud83c\uddf5\ud83c\uddf1" },
   { code: "US", name: "United States", flag: "\ud83c\uddfa\ud83c\uddf8" },
   { code: "JO", name: "Jordan", flag: "\ud83c\uddef\ud83c\uddf4" },
-  { code: "PH", name: "Philippines", flag: "\ud83c\uddf5\ud83c\udded" }
+  { code: "PH", name: "Philippines", flag: "\ud83c\uddf5\ud83c\udded" },
+  { code: "UA", name: "Ukraine",     flag: "\ud83c\uddfa\ud83c\udde6" }
 ];
 
 const TRAVEL_DATA = {
@@ -39,14 +40,15 @@ const TRAVEL_DATA = {
       "US": { type: "Visa-Free", duration: "90 days", notes: "Valid passport required. No work permitted on tourist entry." },
       "JO": { type: "Visa Required", duration: "Varies", notes: "Must apply at the Japanese embassy in Amman. Processing takes approximately 5 business days. Invitation letter may be required." },
       "PH": { type: "Visa Required", duration: "15 days (short-term)", notes: "Apply at the Japanese embassy. Requires confirmed itinerary, hotel bookings, and proof of financial means." },
+      "UA": { type: "Visa-Free", duration: "90 days", notes: "Ukrainian passport holders may enter Japan visa-free for tourism. Confirm with the Japanese embassy before travel as conditions can change." },
       source: { name: "Ministry of Foreign Affairs of Japan", url: "https://www.mofa.go.jp/j_info/visit/visa/index.html", verified: "2026-04-08" }
     },
 
     health: [
-      { name: "Routine Vaccinations", status: "Recommended", description: "Ensure routine vaccinations (MMR, DTP, Polio) are up to date before travel.", cost: null, source: { name: "WHO International Travel and Health", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
-      { name: "Hepatitis A", status: "Recommended", description: "Spread through contaminated food and water. Two doses provide long-term protection.", cost: 60, source: { name: "RIVM (Dutch National Institute for Public Health)", url: "https://www.rivm.nl/vaccinaties", verified: "2026-04-05" } },
-      { name: "Japanese Encephalitis", status: "Recommended", description: "Risk exists in rural areas, especially during summer months. Consider if staying for extended periods or visiting rural regions.", cost: 95, source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
-      { name: "Hepatitis B", status: "Recommended", description: "Recommended for longer stays or if you expect medical treatment during your trip.", cost: 45, source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/japan", verified: "2026-04-05" } }
+      { name: "Routine Vaccinations", status: "Recommended", description: "Ensure routine vaccinations (MMR, DTP, Polio) are up to date before travel.", cost: null, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "WHO International Travel and Health", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
+      { name: "Hepatitis A", status: "Recommended", description: "Spread through contaminated food and water. Two doses provide long-term protection.", cost: 60, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "RIVM (Dutch National Institute for Public Health)", url: "https://www.rivm.nl/vaccinaties", verified: "2026-04-05" } },
+      { name: "Japanese Encephalitis", status: "Recommended", description: "Risk exists in rural areas, especially during summer months. Consider if staying for extended periods or visiting rural regions.", cost: 95, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
+      { name: "Hepatitis B", status: "Recommended", description: "Recommended for longer stays or if you expect medical treatment during your trip.", cost: 45, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/japan", verified: "2026-04-05" } }
     ],
 
     safety: {
@@ -73,10 +75,17 @@ const TRAVEL_DATA = {
       { name: "Sumo Tournament Tickets", description: "Held only during specific tournament months (January, May, September in Tokyo). Arena seats sell out on the first day of sales.", lead_time: "1 month or more", booking_url: "https://www.sumo.or.jp/en/", source: { name: "Japan Sumo Association", url: "https://www.sumo.or.jp/en/", verified: "2026-04-06" } }
     ],
 
+    laws: [
+      { type: "danger", title: "Zero Tolerance for Drugs", description: "Japan has some of the world's strictest drug laws. Possession of even small amounts can result in arrest, deportation, and a permanent entry ban. Some prescription drugs legal in your home country (including certain ADHD medications and cold remedies containing pseudoephedrine) are illegal in Japan. Carry a doctor's certificate and customs declaration for any prescription drugs.", source: { name: "Japan Customs", url: "https://www.customs.go.jp/english/", verified: "2026-04-08" } },
+      { type: "warning", title: "Smoking Restrictions", description: "Smoking is banned in most outdoor public areas, pedestrian zones, and around train stations. Many cities have designated smoking areas only. Fines for smoking in prohibited zones can be significant.", source: { name: "Japan Tourism Agency", url: "https://www.mlit.go.jp/kankocho/en/", verified: "2026-04-08" } },
+      { type: "info", title: "Photography at Temples and Shrines", description: "Many religious sites prohibit interior photography. Always follow posted signs. Some museums and galleries also prohibit photography. Photographing people without consent is considered a serious privacy violation.", source: { name: "Japan National Tourism Organization", url: "https://www.japan.travel/en/", verified: "2026-04-08" } }
+    ],
+
     practical: {
       plug_type: { value: "Type A (two flat pins, same as US). Voltage is 100V.", source: { name: "World Standards", url: "https://www.worldstandards.eu/electricity/plugs-and-sockets/", verified: "2026-04-06" } },
       esim: { value: "eSIMs widely available from providers like Ubigi, Airalo, and IIJmio. Pocket WiFi rental is also very popular and available at airports.", source: { name: "Japan National Tourism Organization", url: "https://www.japan.travel/en/plan/internet/", verified: "2026-04-06" } },
-      transport: { value: "Get a Suica or Pasmo IC card for seamless access to trains, buses, and even convenience store payments. Available at airport stations and major train stations.", source: { name: "Japan National Tourism Organization", url: "https://www.japan.travel/en/plan/getting-around/", verified: "2026-04-06" } }
+      transport: { value: "Get a Suica or Pasmo IC card for seamless access to trains, buses, and even convenience store payments. Available at airport stations and major train stations.", source: { name: "Japan National Tourism Organization", url: "https://www.japan.travel/en/plan/getting-around/", verified: "2026-04-06" } },
+      water_quality: { value: "Tap water is safe to drink throughout Japan and is held to a very high standard. It is one of the few countries in Asia where you can drink freely from the tap.", source: { name: "Japan National Tourism Organization", url: "https://www.japan.travel/en/", verified: "2026-04-06" } }
     }
   },
 
@@ -104,15 +113,16 @@ const TRAVEL_DATA = {
       "US": { type: "Visa-Free", duration: "60 days", notes: "US passport holders receive 60 days visa-free. Extendable by 30 days at immigration." },
       "JO": { type: "Visa on Arrival", duration: "15 days", notes: "Available at international airports. Fee of 2,000 THB. Must have proof of accommodation and return flight." },
       "PH": { type: "Visa-Free", duration: "30 days", notes: "Philippine passport holders receive 30 days visa-free for tourism." },
+      "UA": { type: "Visa-Free", duration: "30 days", notes: "Ukrainian passport holders receive 30 days visa-free. Extendable at Thai immigration offices." },
       source: { name: "Thai Ministry of Foreign Affairs", url: "https://www.mfa.go.th/en/page/visa-and-work-permit", verified: "2026-04-07" }
     },
 
     health: [
-      { name: "Hepatitis A", status: "Recommended", description: "Common risk in Southeast Asia through contaminated food and water.", cost: 60, source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
-      { name: "Typhoid", status: "Recommended", description: "Recommended for travellers who plan to eat street food or visit rural areas. Especially important for food industry workers.", cost: 80, source: { name: "WHO International Travel and Health", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
-      { name: "Hepatitis B", status: "Recommended", description: "Recommended for longer stays, frequent travel, or if medical procedures are anticipated.", cost: 45, source: { name: "RIVM", url: "https://www.rivm.nl/vaccinaties", verified: "2026-04-05" } },
-      { name: "Rabies", status: "Recommended", description: "Consider if you plan to visit rural areas, go trekking, or expect contact with animals. Post-exposure treatment is available but may be difficult to access in remote areas.", cost: 75, source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/thailand", verified: "2026-04-05" } },
-      { name: "Malaria Prophylaxis", status: "Recommended", description: "Risk exists in some border areas and forests, but not in major tourist areas like Bangkok, Chiang Mai city, or the main islands.", cost: 40, source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } }
+      { name: "Hepatitis A", status: "Recommended", description: "Common risk in Southeast Asia through contaminated food and water.", cost: 60, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
+      { name: "Typhoid", status: "Recommended", description: "Recommended for travellers who plan to eat street food or visit rural areas. Especially important for food industry workers.", cost: 80, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "WHO International Travel and Health", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
+      { name: "Hepatitis B", status: "Recommended", description: "Recommended for longer stays, frequent travel, or if medical procedures are anticipated.", cost: 45, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "RIVM", url: "https://www.rivm.nl/vaccinaties", verified: "2026-04-05" } },
+      { name: "Rabies", status: "Recommended", description: "Consider if you plan to visit rural areas, go trekking, or expect contact with animals. Post-exposure treatment is available but may be difficult to access in remote areas.", cost: 75, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/thailand", verified: "2026-04-05" } },
+      { name: "Malaria Prophylaxis", status: "Recommended", description: "Risk exists in some border areas and forests, but not in major tourist areas like Bangkok, Chiang Mai city, or the main islands.", cost: 40, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } }
     ],
 
     safety: {
@@ -137,10 +147,18 @@ const TRAVEL_DATA = {
       { name: "Thai Cooking Classes", description: "Popular cooking classes in Chiang Mai and Bangkok fill up quickly during high season (November to February).", lead_time: "1 week", booking_url: null, source: { name: "Tourism Authority of Thailand", url: "https://www.tourismthailand.org/", verified: "2026-04-06" } }
     ],
 
+    laws: [
+      { type: "danger", title: "Lese-Majesty (Royal Defamation)", description: "Insulting, defaming, or threatening the Thai royal family is a criminal offence under Section 112 of the Thai Criminal Code, punishable by up to 15 years in prison per count. This applies to social media posts and even private jokes. Do not comment negatively about the monarchy in any setting.", source: { name: "UK FCDO", url: "https://www.gov.uk/foreign-travel-advice/thailand/local-laws-and-customs", verified: "2026-04-08" } },
+      { type: "danger", title: "E-Cigarettes and Vaping Are Illegal", description: "E-cigarettes, vaporisers, and refills are banned in Thailand. Possession can result in a fine of up to THB 30,000 and/or up to 10 years imprisonment. Do not bring vaping devices into the country, even for personal use.", source: { name: "UK FCDO", url: "https://www.gov.uk/foreign-travel-advice/thailand/local-laws-and-customs", verified: "2026-04-08" } },
+      { type: "danger", title: "Strict Drug Laws", description: "Drug trafficking can carry the death penalty in Thailand. Possession of even small amounts of illegal substances for personal use can result in years of imprisonment. Substances that are legal or decriminalised in your home country are not exempt.", source: { name: "UK FCDO", url: "https://www.gov.uk/foreign-travel-advice/thailand/local-laws-and-customs", verified: "2026-04-08" } },
+      { type: "warning", title: "Taxi and Tuk-Tuk Scams", description: "Taxi drivers who refuse to use the meter and tuk-tuk drivers offering 'free tours' are common tourist scams. Always insist on the meter in taxis, or use Grab for reliable, fare-transparent travel. Gem shop and 'special deal' tours are also well-known scams.", source: { name: "Tourism Authority of Thailand", url: "https://www.tourismthailand.org/", verified: "2026-04-08" } }
+    ],
+
     practical: {
       plug_type: { value: "Type A, B, and C plugs are used. Voltage is 220V. A universal adapter is recommended.", source: { name: "World Standards", url: "https://www.worldstandards.eu/electricity/plugs-and-sockets/", verified: "2026-04-06" } },
       esim: { value: "eSIMs available from Airalo and local providers. Physical SIM cards from AIS, DTAC, or TrueMove are cheap and sold at airports and 7-Elevens everywhere.", source: { name: "Tourism Authority of Thailand", url: "https://www.tourismthailand.org/", verified: "2026-04-06" } },
-      transport: { value: "Bangkok: use the BTS Skytrain and MRT metro. Get a Rabbit card for cashless travel. Grab (ride-hailing app) is widely used and more reliable than street taxis for fair pricing.", source: { name: "Tourism Authority of Thailand", url: "https://www.tourismthailand.org/", verified: "2026-04-06" } }
+      transport: { value: "Bangkok: use the BTS Skytrain and MRT metro. Get a Rabbit card for cashless travel. Grab (ride-hailing app) is widely used and more reliable than street taxis for fair pricing.", source: { name: "Tourism Authority of Thailand", url: "https://www.tourismthailand.org/", verified: "2026-04-06" } },
+      water_quality: { value: "Tap water is not safe to drink in Thailand. Always use bottled or filtered water for drinking and brushing teeth. Bottled water is cheap and widely available. Ice in reputable restaurants is generally made from filtered water.", source: { name: "WHO International Travel and Health", url: "https://www.who.int/travel-advice", verified: "2026-04-06" } }
     }
   },
 
@@ -168,14 +186,15 @@ const TRAVEL_DATA = {
       "US": { type: "Visa-Free", duration: "30 days", notes: "Extendable up to 36 months. Balikbayan privilege available for former Filipino citizens." },
       "JO": { type: "Visa Required", duration: "30 days", notes: "Must apply at the Philippine embassy. Requires invitation letter or hotel bookings, proof of funds, and return ticket." },
       "PH": { type: "No visa needed", duration: "Citizen", notes: "Philippine citizens do not need a visa for their own country." },
+      "UA": { type: "Visa-Free", duration: "30 days", notes: "Ukrainian passport holders receive 30 days visa-free for tourism. Extendable at Bureau of Immigration offices." },
       source: { name: "Philippine Bureau of Immigration", url: "https://immigration.gov.ph/", verified: "2026-04-07" }
     },
 
     health: [
-      { name: "Hepatitis A", status: "Recommended", description: "Common risk through food and water contamination, especially outside major cities.", cost: 60, source: { name: "WHO", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
-      { name: "Typhoid", status: "Recommended", description: "Risk is present throughout the country, particularly with street food and in rural areas.", cost: 80, source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/philippines", verified: "2026-04-05" } },
-      { name: "Rabies", status: "Recommended", description: "Stray dogs are common throughout the Philippines. Pre-exposure vaccination is recommended for extended stays or rural travel.", cost: 75, source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
-      { name: "Yellow Fever", status: "Required", description: "Required only if arriving from a country with risk of yellow fever transmission. Certificate must be presented at entry.", cost: 50, source: { name: "Philippine Bureau of Quarantine", url: "https://boq.gov.ph/", verified: "2026-04-05" } }
+      { name: "Hepatitis A", status: "Recommended", description: "Common risk through food and water contamination, especially outside major cities.", cost: 60, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "WHO", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
+      { name: "Typhoid", status: "Recommended", description: "Risk is present throughout the country, particularly with street food and in rural areas.", cost: 80, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/philippines", verified: "2026-04-05" } },
+      { name: "Rabies", status: "Recommended", description: "Stray dogs are common throughout the Philippines. Pre-exposure vaccination is recommended for extended stays or rural travel.", cost: 75, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
+      { name: "Yellow Fever", status: "Required", description: "Required only if arriving from a country with risk of yellow fever transmission. Certificate must be presented at entry.", cost: 50, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "Philippine Bureau of Quarantine", url: "https://boq.gov.ph/", verified: "2026-04-05" } }
     ],
 
     safety: {
@@ -200,10 +219,17 @@ const TRAVEL_DATA = {
       { name: "Domestic Flights", description: "Inter-island flights with Cebu Pacific or Philippine Airlines can be very cheap if booked early, but prices surge close to travel dates. Delays and cancellations during typhoon season (June to November) are common.", lead_time: "2 to 4 weeks for best prices", booking_url: null, source: { name: "Cebu Pacific", url: "https://www.cebupacificair.com/", verified: "2026-04-06" } }
     ],
 
+    laws: [
+      { type: "danger", title: "Strict Drug Laws", description: "The Philippines has among the world's toughest drug enforcement. Possession of even small amounts of illegal drugs can result in lengthy imprisonment regardless of nationality. Do not purchase or accept drugs under any circumstances.", source: { name: "UK FCDO", url: "https://www.gov.uk/foreign-travel-advice/philippines/local-laws-and-customs", verified: "2026-04-08" } },
+      { type: "warning", title: "No Smoking in Public", description: "Smoking is prohibited in all public places including streets, parks, beaches, and restaurants across most cities (enforced Metro-wide). Fines apply. Only smoke in designated smoking areas.", source: { name: "Philippine Department of Health", url: "https://www.doh.gov.ph/", verified: "2026-04-08" } },
+      { type: "info", title: "Dress Modestly at Religious Sites", description: "The Philippines is predominantly Catholic. Cover shoulders and knees when entering churches and religious sites. Loud or disruptive behaviour inside churches is considered deeply disrespectful and can lead to removal.", source: { name: "Philippine Department of Tourism", url: "https://www.tourism.gov.ph/", verified: "2026-04-08" } }
+    ],
+
     practical: {
       plug_type: { value: "Type A and Type B (same as US/Japan). Voltage is 220V. US devices may work without an adapter but check voltage compatibility.", source: { name: "World Standards", url: "https://www.worldstandards.eu/electricity/plugs-and-sockets/", verified: "2026-04-06" } },
       esim: { value: "eSIMs available from Airalo and Maya. Physical SIMs from Globe or Smart are widely available at airports and malls. Data is very affordable.", source: { name: "Philippine Department of Tourism", url: "https://www.tourism.gov.ph/", verified: "2026-04-06" } },
-      transport: { value: "Use Grab for reliable ride-hailing. Jeepneys are the iconic and cheapest local transport. For inter-island travel, ferries (2GO, FastCat) connect major islands.", source: { name: "Philippine Department of Tourism", url: "https://www.tourism.gov.ph/", verified: "2026-04-06" } }
+      transport: { value: "Use Grab for reliable ride-hailing. Jeepneys are the iconic and cheapest local transport. For inter-island travel, ferries (2GO, FastCat) connect major islands.", source: { name: "Philippine Department of Tourism", url: "https://www.tourism.gov.ph/", verified: "2026-04-06" } },
+      water_quality: { value: "Tap water in the Philippines is generally not safe to drink outside filtered hotel systems. Always use bottled water for drinking and brushing teeth. In rural areas, boil or purify water before consumption.", source: { name: "WHO International Travel and Health", url: "https://www.who.int/travel-advice", verified: "2026-04-06" } }
     }
   },
 
@@ -231,14 +257,15 @@ const TRAVEL_DATA = {
       "US": { type: "Visa-Free", duration: "30 days", notes: "For tourism. Registration requirements apply for longer stays." },
       "JO": { type: "eVisa", duration: "30 days", notes: "Apply online through the eVisa portal. Processing takes approximately 5 business days. Single entry." },
       "PH": { type: "Visa Required", duration: "30 days", notes: "Must apply at the Kazakh embassy. Requires letter of invitation, hotel bookings, and proof of financial means." },
+      "UA": { type: "Visa-Free", duration: "30 days", notes: "Ukrainian passport holders can enter Kazakhstan visa-free for tourism. Registration with migration police required for stays over 3 days." },
       source: { name: "Ministry of Foreign Affairs of Kazakhstan", url: "https://www.gov.kz/memleket/entities/mfa/activities/4691", verified: "2026-04-07" }
     },
 
     health: [
-      { name: "Routine Vaccinations", status: "Recommended", description: "Ensure routine vaccinations are current, including measles and tetanus.", cost: null, source: { name: "WHO", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
-      { name: "Hepatitis A", status: "Recommended", description: "Risk through contaminated food and water, particularly in rural areas.", cost: 60, source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/kazakhstan", verified: "2026-04-05" } },
-      { name: "Typhoid", status: "Recommended", description: "Consider if visiting smaller towns or eating outside of major hotels and restaurants.", cost: 80, source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
-      { name: "Rabies", status: "Recommended", description: "Consider if planning outdoor activities in rural areas or if you expect contact with animals.", cost: 75, source: { name: "WHO", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } }
+      { name: "Routine Vaccinations", status: "Recommended", description: "Ensure routine vaccinations are current, including measles and tetanus.", cost: null, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "WHO", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
+      { name: "Hepatitis A", status: "Recommended", description: "Risk through contaminated food and water, particularly in rural areas.", cost: 60, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/kazakhstan", verified: "2026-04-05" } },
+      { name: "Typhoid", status: "Recommended", description: "Consider if visiting smaller towns or eating outside of major hotels and restaurants.", cost: 80, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
+      { name: "Rabies", status: "Recommended", description: "Consider if planning outdoor activities in rural areas or if you expect contact with animals.", cost: 75, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "WHO", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } }
     ],
 
     safety: {
@@ -262,10 +289,17 @@ const TRAVEL_DATA = {
       { name: "Baikonur Cosmodrome Tours", description: "Visits to the world's oldest space launch facility require special permits arranged through licensed tour operators well in advance.", lead_time: "1 to 2 months", booking_url: null, source: { name: "Kazakhstan Tourism Board", url: "https://www.kazakhstan.travel/en/", verified: "2026-04-06" } }
     ],
 
+    laws: [
+      { type: "warning", title: "Photography Restrictions", description: "Photographing government buildings, military installations, police stations, and border areas is strictly prohibited and can lead to camera confiscation or detention. Always ask permission before photographing individuals, especially in traditional settings.", source: { name: "Netherlands Ministry of Foreign Affairs", url: "https://www.nederlandwereldwijd.nl/reisadvies/kazachstan", verified: "2026-04-08" } },
+      { type: "danger", title: "Drug Laws", description: "Drug offences carry severe penalties in Kazakhstan, including long prison terms. Border controls are strict and searches are common. There is no leniency for tourists.", source: { name: "Netherlands Ministry of Foreign Affairs", url: "https://www.nederlandwereldwijd.nl/reisadvies/kazachstan", verified: "2026-04-08" } },
+      { type: "info", title: "Currency and Registration", description: "Carry all currency exchange receipts as customs may ask you to account for currency when leaving. If staying at a private residence (not a hotel), you must register with the local migration police within 3 days of arrival. Hotels handle this automatically.", source: { name: "Kazakhstan Customs Committee", url: "https://www.gov.kz/", verified: "2026-04-08" } }
+    ],
+
     practical: {
       plug_type: { value: "Type C and Type F (European standard). Voltage is 220V. Travellers from the US, UK, or Asia will need an adapter.", source: { name: "World Standards", url: "https://www.worldstandards.eu/electricity/plugs-and-sockets/", verified: "2026-04-06" } },
       esim: { value: "eSIMs available from Airalo. Local SIM cards from Kcell or Beeline are available at airports and telecom shops. Data coverage can be limited in remote areas.", source: { name: "Kazakhstan Tourism Board", url: "https://www.kazakhstan.travel/en/", verified: "2026-04-06" } },
-      transport: { value: "Almaty has a metro system. Yandex Go is the main ride-hailing app. For inter-city travel, domestic flights are affordable and trains offer scenic routes across the steppe.", source: { name: "Kazakhstan Tourism Board", url: "https://www.kazakhstan.travel/en/", verified: "2026-04-06" } }
+      transport: { value: "Almaty has a metro system. Yandex Go is the main ride-hailing app. For inter-city travel, domestic flights are affordable and trains offer scenic routes across the steppe.", source: { name: "Kazakhstan Tourism Board", url: "https://www.kazakhstan.travel/en/", verified: "2026-04-06" } },
+      water_quality: { value: "Tap water quality varies across Kazakhstan. In Almaty and Astana the water is treated but may taste unpleasant. Bottled water is recommended throughout your trip, particularly in rural areas.", source: { name: "WHO International Travel and Health", url: "https://www.who.int/travel-advice", verified: "2026-04-06" } }
     }
   },
 
@@ -293,15 +327,16 @@ const TRAVEL_DATA = {
       "US": { type: "eVisa", duration: "90 days", notes: "Apply online. Multiple entry available. Processing approximately 3 business days." },
       "JO": { type: "eVisa", duration: "30 days", notes: "Apply online at the official eVisa portal. Single entry. Must have at least 6 months passport validity." },
       "PH": { type: "Visa-Free", duration: "21 days", notes: "Philippine passport holders receive 21 days visa-free. For longer stays, apply for an eVisa." },
+      "UA": { type: "eVisa", duration: "90 days", notes: "Apply online at the official Vietnam eVisa portal. Processing takes approximately 3 business days. Must have at least 6 months passport validity." },
       source: { name: "Vietnam Immigration Department", url: "https://evisa.xuatnhapcanh.gov.vn/", verified: "2026-04-07" }
     },
 
     health: [
-      { name: "Hepatitis A", status: "Recommended", description: "Common risk throughout the country, especially with street food consumption.", cost: 60, source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
-      { name: "Typhoid", status: "Recommended", description: "Recommended for all travellers. Risk is widespread, particularly in areas with limited sanitation.", cost: 80, source: { name: "WHO", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
-      { name: "Japanese Encephalitis", status: "Recommended", description: "Risk in rural areas, particularly in the north. Consider if travelling during the rainy season or staying in rural regions.", cost: 95, source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/vietnam", verified: "2026-04-05" } },
-      { name: "Rabies", status: "Recommended", description: "Stray dogs are common. Pre-exposure vaccination recommended for rural travel or extended stays.", cost: 75, source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
-      { name: "Malaria Prophylaxis", status: "Recommended", description: "Risk in some rural and forested areas, particularly in the central highlands. Not needed for major cities or coastal tourist areas.", cost: 40, source: { name: "RIVM", url: "https://www.rivm.nl/vaccinaties", verified: "2026-04-05" } }
+      { name: "Hepatitis A", status: "Recommended", description: "Common risk throughout the country, especially with street food consumption.", cost: 60, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
+      { name: "Typhoid", status: "Recommended", description: "Recommended for all travellers. Risk is widespread, particularly in areas with limited sanitation.", cost: 80, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "WHO", url: "https://www.who.int/travel-advice", verified: "2026-04-05" } },
+      { name: "Japanese Encephalitis", status: "Recommended", description: "Risk in rural areas, particularly in the north. Consider if travelling during the rainy season or staying in rural regions.", cost: 95, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "CDC Travelers' Health", url: "https://wwwnc.cdc.gov/travel/destinations/traveler/none/vietnam", verified: "2026-04-05" } },
+      { name: "Rabies", status: "Recommended", description: "Stray dogs are common. Pre-exposure vaccination recommended for rural travel or extended stays.", cost: 75, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "GGD Travel Health Advisory", url: "https://www.ggdreisvaccinaties.nl", verified: "2026-04-05" } },
+      { name: "Malaria Prophylaxis", status: "Recommended", description: "Risk in some rural and forested areas, particularly in the central highlands. Not needed for major cities or coastal tourist areas.", cost: 40, booking_url: "https://www.ggdreisvaccinaties.nl", source: { name: "RIVM", url: "https://www.rivm.nl/vaccinaties", verified: "2026-04-05" } }
     ],
 
     safety: {
@@ -327,10 +362,17 @@ const TRAVEL_DATA = {
       { name: "Cu Chi Tunnels", description: "Guided tours to the Cu Chi Tunnels from Ho Chi Minh City are very popular. Small-group tours offer a better experience but book out faster.", lead_time: "2 to 3 days", booking_url: null, source: { name: "Vietnam National Administration of Tourism", url: "https://vietnam.travel/", verified: "2026-04-06" } }
     ],
 
+    laws: [
+      { type: "warning", title: "Taxi Scams and Fake Ride-Hailing", description: "Fake taxis and inflated fares are widespread, especially at airports and tourist spots in Ho Chi Minh City and Hanoi. Only use Grab (the verified ride-hailing app) or officially branded airport taxis. Be especially wary of drivers who approach you directly.", source: { name: "Vietnam National Administration of Tourism", url: "https://vietnam.travel/", verified: "2026-04-08" } },
+      { type: "danger", title: "Drug Laws", description: "Drug trafficking carries the death penalty in Vietnam. Possession of illegal substances can result in long prison terms. Vietnamese authorities do not make exceptions for tourists. Never purchase or accept substances from strangers.", source: { name: "UK FCDO", url: "https://www.gov.uk/foreign-travel-advice/vietnam/local-laws-and-customs", verified: "2026-04-08" } },
+      { type: "warning", title: "Photography Near Military Sites", description: "Photography of military bases, government buildings, border areas, and official infrastructure is prohibited and can result in camera confiscation or detention. When in doubt, do not photograph official-looking structures.", source: { name: "UK FCDO", url: "https://www.gov.uk/foreign-travel-advice/vietnam/local-laws-and-customs", verified: "2026-04-08" } }
+    ],
+
     practical: {
       plug_type: { value: "Type A, C, and F plugs are used. Voltage is 220V. A universal adapter is recommended as socket types vary between hotels.", source: { name: "World Standards", url: "https://www.worldstandards.eu/electricity/plugs-and-sockets/", verified: "2026-04-06" } },
       esim: { value: "eSIMs available from Airalo and local providers. Physical SIMs from Viettel, Mobifone, or Vinaphone are very affordable and available at airports. Data coverage is excellent even in rural areas.", source: { name: "Vietnam National Administration of Tourism", url: "https://vietnam.travel/", verified: "2026-04-06" } },
-      transport: { value: "Grab is the go-to ride-hailing app in all major cities. For longer distances, domestic flights are cheap with VietJet and Bamboo Airways. Sleeper buses are a popular budget option between cities.", source: { name: "Vietnam National Administration of Tourism", url: "https://vietnam.travel/", verified: "2026-04-06" } }
+      transport: { value: "Grab is the go-to ride-hailing app in all major cities. For longer distances, domestic flights are cheap with VietJet and Bamboo Airways. Sleeper buses are a popular budget option between cities.", source: { name: "Vietnam National Administration of Tourism", url: "https://vietnam.travel/", verified: "2026-04-06" } },
+      water_quality: { value: "Tap water is not safe to drink in Vietnam. Always use bottled or filtered water for drinking and brushing teeth. Bottled water is widely available and inexpensive. Be cautious with ice at street stalls.", source: { name: "WHO International Travel and Health", url: "https://www.who.int/travel-advice", verified: "2026-04-06" } }
     }
   }
 

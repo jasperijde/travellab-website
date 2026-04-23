@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* ---- Two-column form grid ---- */
+    /* ---- Form grid ---- */
     .planner-form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -19,6 +19,12 @@
     }
     @media (max-width: 600px) {
       .planner-form-grid { grid-template-columns: 1fr; }
+    }
+    .field-hint {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-top: 6px;
+      font-style: italic;
     }
 
     /* ---- Destination chips ---- */
@@ -48,7 +54,6 @@
       display: flex;
       flex-direction: column;
       gap: 2px;
-      font-size: 0.78rem;
     }
     .dest-chip-date-field label {
       font-size: 0.72rem;
@@ -104,28 +109,14 @@
       border: 1px solid #e8e4dc;
       margin-bottom: 36px;
     }
-    .leaflet-popup-content-wrapper {
-      border-radius: 8px;
-    }
     .map-popup {
       font-family: 'Montserrat', sans-serif;
       font-size: 0.86rem;
       min-width: 180px;
     }
-    .map-popup-title {
-      font-weight: 700;
-      font-size: 1rem;
-      margin-bottom: 4px;
-    }
-    .map-popup-dates {
-      color: #666;
-      margin-bottom: 4px;
-    }
-    .map-popup-flight {
-      color: #888;
-      font-size: 0.78rem;
-      margin-bottom: 6px;
-    }
+    .map-popup-title { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+    .map-popup-dates { color: #666; margin-bottom: 4px; }
+    .map-popup-flight { color: #888; font-size: 0.78rem; margin-bottom: 6px; }
     .map-popup-link {
       display: inline-block;
       color: var(--primary, #2c5f2e);
@@ -134,13 +125,7 @@
       text-decoration: none;
     }
     .map-popup-link:hover { text-decoration: underline; }
-
-    /* ---- Origin map icon ---- */
-    .origin-icon {
-      font-size: 1.5rem;
-      line-height: 1;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35));
-    }
+    .origin-icon { font-size: 1.5rem; line-height: 1; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.35)); }
 
     /* ---- Task deadline badge ---- */
     .task-deadline {
@@ -148,6 +133,178 @@
       font-weight: 600;
       margin-top: 6px;
       display: block;
+    }
+
+    /* ---- Filter bar ---- */
+    .filter-bar {
+      max-width: 800px;
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .dest-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .dest-tab {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 7px 18px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .dest-tab:hover { color: var(--navy); border-color: var(--sky); }
+    .dest-tab.active {
+      background: var(--sky-deep);
+      color: var(--white);
+      border-color: var(--sky-deep);
+    }
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .filter-chip {
+      background: var(--white);
+      border: 1px solid var(--light-bg);
+      border-radius: 50px;
+      padding: 5px 14px;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-chip:hover { border-color: var(--sky); color: var(--navy); }
+    .filter-chip.active {
+      background: var(--navy);
+      color: var(--white);
+      border-color: var(--navy);
+    }
+
+    /* ---- Must-do only toggle ---- */
+    .mode-toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+      white-space: nowrap;
+    }
+    .mode-toggle-wrap label {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: #ccc;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+    .toggle-switch input:checked + .toggle-slider { background: #C45C5C; }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(16px); }
+
+    /* ---- Must-do separator in timeline ---- */
+    .must-do-separator {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-light);
+      margin: 10px 0 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--light-bg);
+    }
+    .must-do-separator.must { color: #C45C5C; border-color: rgba(196, 92, 92, 0.2); }
+    .must-do-separator.secondary { color: var(--text-light); }
+
+    /* ---- Hidden tasks (filter) ---- */
+    .task-hidden { display: none !important; }
+
+    /* ---- Calendar export button ---- */
+    .calendar-export-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1.5px solid var(--sky-deep);
+      color: var(--sky-deep);
+      border-radius: 50px;
+      padding: 10px 22px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 32px;
+    }
+    .calendar-export-btn:hover {
+      background: var(--sky-deep);
+      color: var(--white);
+    }
+
+    /* ---- Legal disclaimer ---- */
+    .disclaimer-box {
+      max-width: 800px;
+      margin-top: 48px;
+      padding: 20px 24px;
+      background: rgba(123, 167, 190, 0.07);
+      border: 1px solid rgba(123, 167, 190, 0.2);
+      border-radius: var(--radius);
+      font-size: 0.82rem;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+    .disclaimer-box strong { color: var(--navy); }
+
+    /* ---- EU Residence note ---- */
+    .eu-residence-note {
+      max-width: 800px;
+      margin-bottom: 24px;
+      padding: 16px 20px;
+      background: rgba(212, 165, 116, 0.1);
+      border-left: 3px solid var(--orange);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.7;
     }
   </style>
 </head>
@@ -185,16 +342,28 @@
     <div class="container">
       <div class="planner-form">
 
-        <!-- Two-column top row: Flying from + Passport -->
+        <!-- Row 1: Passport first (per UX feedback) -->
         <div class="planner-form-grid">
-          <div class="planner-field">
-            <label for="planner-origin">Flying from</label>
-            <select id="planner-origin"></select>
-          </div>
           <div class="planner-field">
             <label for="planner-passport">Your passport</label>
             <select id="planner-passport"></select>
           </div>
+          <div class="planner-field">
+            <label for="planner-origin">Flying from</label>
+            <select id="planner-origin"></select>
+          </div>
+        </div>
+
+        <!-- Secondary document field -->
+        <div class="planner-field">
+          <label for="planner-secondary-doc">Secondary document (optional)</label>
+          <select id="planner-secondary-doc">
+            <option value="">None</option>
+            <option value="EU_RESIDENT">EU Residence Card</option>
+            <option value="EEA_PERMIT">EEA Residence Permit</option>
+            <option value="UK_ILR">UK Indefinite Leave to Remain</option>
+          </select>
+          <p class="field-hint">Holding an EU Residence Card or similar document may affect visa requirements in some destinations. We will flag this in your plan.</p>
         </div>
 
         <!-- Destinations -->
@@ -210,7 +379,7 @@
         </div>
 
         <!-- Generate button -->
-        <button id="generate-btn" class="hero-cta" style="width:100%; text-align:center; border:none; cursor:pointer; font-family: 'Inter', sans-serif;">Generate My Preparation Timeline</button>
+        <button id="generate-btn" class="hero-cta" style="width:100%; text-align:center; border:none; cursor:pointer; font-family: 'Montserrat', sans-serif;">Generate My Preparation Timeline</button>
 
       </div>
     </div>
@@ -222,14 +391,52 @@
       <h2 id="results-title"></h2>
       <p class="results-subtitle" id="results-subtitle"></p>
 
+      <!-- EU Residence note (shown when applicable) -->
+      <div class="eu-residence-note" id="eu-residence-note" style="display:none;">
+        <strong>Secondary document detected:</strong> You indicated you hold an EU Residence Card or equivalent document. This may entitle you to visa-free access or easier entry in some destinations that restrict your passport nationality. Verify all visa requirements with the relevant embassies, as rules vary by country and are subject to change.
+      </div>
+
       <!-- Map (shown after generate) -->
       <div id="trip-map" style="display:none;"></div>
+
+      <!-- Filter bar -->
+      <div class="filter-bar" id="filter-bar" style="display:none;">
+        <div class="dest-tabs" id="dest-tabs"></div>
+        <div class="filter-row">
+          <div class="filter-chips" id="cat-chips">
+            <button class="filter-chip active" data-cat="all">All tasks</button>
+            <button class="filter-chip" data-cat="Visa &amp; Entry">Visa</button>
+            <button class="filter-chip" data-cat="Health">Health</button>
+            <button class="filter-chip" data-cat="Safety">Safety</button>
+            <button class="filter-chip" data-cat="Booking">Bookings</button>
+            <button class="filter-chip" data-cat="Practical">Practical</button>
+            <button class="filter-chip" data-cat="Culture">Culture</button>
+          </div>
+          <div class="mode-toggle-wrap">
+            <label>
+              <span class="toggle-switch">
+                <input type="checkbox" id="minimal-mode">
+                <span class="toggle-slider"></span>
+              </span>
+              Must-do only
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar export -->
+      <button class="calendar-export-btn" id="calendar-btn" style="display:none;">
+        &#128197; Export deadlines to calendar
+      </button>
 
       <!-- Timeline -->
       <div class="timeline" id="timeline"></div>
 
-      <!-- Per-destination breakdown -->
-      <div id="destination-details"></div>
+      <!-- Disclaimer -->
+      <div class="disclaimer-box" id="results-disclaimer" style="display:none;">
+        <strong>Important disclaimer:</strong> Travel Lab compiles information from official government and health sources. While we verify each data point, visa rules, health requirements, and safety advisories can change at short notice. Always perform a final check with the destination country's official immigration authority, your embassy, or a qualified travel health professional before departure. Travel Lab accepts no liability for decisions made based on this information.
+      </div>
+
     </div>
   </section>
 
@@ -260,7 +467,6 @@
   <script>
   (function() {
     const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => document.querySelectorAll(sel);
 
     function esc(str) {
       const d = document.createElement('div');
@@ -284,10 +490,8 @@
       { id: 'SIN', name: 'Singapore', code: 'SIN', lat: 1.35,  lng: 103.99 }
     ];
 
-    /* ---- Haversine flight hours ---- */
     function flightHrs(lat1,lng1,lat2,lng2){const R=6371,dLat=(lat2-lat1)*Math.PI/180,dLng=(lng2-lng1)*Math.PI/180,a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;return Math.max(1,Math.round(R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a))/850+1));}
 
-    /* ---- Format date ---- */
     function fmtDate(d) {
       if (!d) return '';
       const date = (d instanceof Date) ? d : new Date(d + 'T00:00:00');
@@ -326,13 +530,12 @@
       addSelect.appendChild(opt);
     });
 
-    /* selectedDestinations: array of { id, arrival, departure } */
     let selectedDestinations = [];
 
     function renderDestinations() {
       const list = $('#destination-list');
       if (selectedDestinations.length === 0) {
-        list.innerHTML = '<p class="dest-empty">No destinations added yet. Add your first stop above.</p>';
+        list.innerHTML = '<p class="dest-empty">No destinations added yet.</p>';
         return;
       }
       list.innerHTML = selectedDestinations.map((dest, i) => {
@@ -357,20 +560,15 @@
         </div>`;
       }).join('');
 
-      /* Arrival change handler */
       list.querySelectorAll('.chip-arrival').forEach(input => {
         input.addEventListener('change', () => {
-          const idx = parseInt(input.dataset.index);
-          selectedDestinations[idx].arrival = input.value;
+          selectedDestinations[parseInt(input.dataset.index)].arrival = input.value;
         });
       });
-
-      /* Departure change handler: auto-fill next arrival */
       list.querySelectorAll('.chip-departure').forEach(input => {
         input.addEventListener('change', () => {
           const idx = parseInt(input.dataset.index);
           selectedDestinations[idx].departure = input.value;
-          /* Auto-fill next destination's arrival */
           if (idx + 1 < selectedDestinations.length) {
             selectedDestinations[idx + 1].arrival = input.value;
             const nextArrival = document.getElementById(`arrival-${idx + 1}`);
@@ -378,7 +576,6 @@
           }
         });
       });
-
       list.querySelectorAll('.dest-remove').forEach(btn => {
         btn.addEventListener('click', () => {
           selectedDestinations.splice(parseInt(btn.dataset.index), 1);
@@ -400,42 +597,35 @@
     /* ---- Map instance ---- */
     let mapInstance = null;
 
-    /* ---- Generate timeline ---- */
+    /* ---- All tasks (used for calendar export) ---- */
+    let allTasks = [];
+
+    /* ---- Generate ---- */
     $('#generate-btn').addEventListener('click', generate);
 
     function generate() {
       const passport = passportSelect.value;
       const originId = originSelect.value;
+      const secondaryDoc = $('#planner-secondary-doc').value;
 
       if (selectedDestinations.length === 0) {
         alert('Please add at least one destination.');
         return;
       }
-
-      /* Validate all dates are provided */
       for (let i = 0; i < selectedDestinations.length; i++) {
         const d = selectedDestinations[i];
         const c = TRAVEL_DATA[d.id];
-        if (!d.arrival) {
-          alert(`Please set an arrival date for ${c.name}.`);
-          return;
-        }
-        if (!d.departure) {
-          alert(`Please set a departure date for ${c.name}.`);
-          return;
-        }
+        if (!d.arrival) { alert(`Please set an arrival date for ${c.name}.`); return; }
+        if (!d.departure) { alert(`Please set a departure date for ${c.name}.`); return; }
       }
 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-
-      /* Earliest arrival = overall departure for subtitle */
       const firstArrival = new Date(selectedDestinations[0].arrival + 'T00:00:00');
       const daysUntilFirst = Math.ceil((firstArrival - today) / (1000 * 60 * 60 * 24));
-
       const origin = ORIGIN_CITIES.find(c => c.id === originId);
 
-      /* ---- Collect all prep tasks across destinations ---- */
+      /* ---- Build tasks ---- */
       const tasks = [];
 
       selectedDestinations.forEach(dest => {
@@ -448,60 +638,66 @@
         if (visa) {
           if (visa.type === 'Visa Required') {
             tasks.push({
-              country: country.name, flag: country.flag, category: 'Visa & Entry',
+              countryId: country.id, country: country.name, flag: country.flag, category: 'Visa & Entry',
               task: `Apply for visa to ${country.name}`,
               detail: visa.notes,
               daysBeforeMin: 60, daysBeforeIdeal: 90,
-              urgency: 'high', source: visaSource, arrivalDate
+              urgency: 'high', isMustDo: true, source: visaSource, arrivalDate
             });
           } else if (visa.type === 'eVisa') {
             tasks.push({
-              country: country.name, flag: country.flag, category: 'Visa & Entry',
+              countryId: country.id, country: country.name, flag: country.flag, category: 'Visa & Entry',
               task: `Apply for eVisa for ${country.name}`,
               detail: visa.notes,
               daysBeforeMin: 7, daysBeforeIdeal: 21,
-              urgency: 'medium', source: visaSource, arrivalDate
+              urgency: 'medium', isMustDo: false, source: visaSource, arrivalDate
             });
           } else {
             tasks.push({
-              country: country.name, flag: country.flag, category: 'Visa & Entry',
+              countryId: country.id, country: country.name, flag: country.flag, category: 'Visa & Entry',
               task: `Check passport validity for ${country.name} (${visa.type}, ${visa.duration})`,
               detail: visa.notes,
               daysBeforeMin: 14, daysBeforeIdeal: 30,
-              urgency: 'low', source: visaSource, arrivalDate
+              urgency: 'low', isMustDo: false, source: visaSource, arrivalDate
             });
           }
         }
 
         /* Health tasks */
         country.health.forEach(h => {
+          const isRequired = h.status === 'Required';
           let daysMin = 14, daysIdeal = 42;
-          if (h.status === 'Required') { daysMin = 30; daysIdeal = 60; }
+          if (isRequired) { daysMin = 30; daysIdeal = 60; }
           tasks.push({
-            country: country.name, flag: country.flag, category: 'Health',
-            task: `${h.status === 'Required' ? 'Get required' : 'Consider'} ${h.name} vaccination`,
-            detail: h.description + (h.cost ? ` (estimated ~\u20ac${h.cost})` : ''),
+            countryId: country.id, country: country.name, flag: country.flag, category: 'Health',
+            task: `${isRequired ? '[Mandatory]' : '[Recommended]'} ${h.name} vaccination`,
+            detail: h.description + (h.cost ? ` (approx. \u20ac${h.cost})` : ''),
             daysBeforeMin: daysMin, daysBeforeIdeal: daysIdeal,
-            urgency: h.status === 'Required' ? 'high' : 'medium', source: h.source, arrivalDate
+            urgency: isRequired ? 'high' : 'medium',
+            isMustDo: isRequired,
+            bookingUrl: h.booking_url || null,
+            source: h.source, arrivalDate
           });
         });
 
         /* Safety check */
         if (country.safety.insurance_warning) {
           tasks.push({
-            country: country.name, flag: country.flag, category: 'Safety',
+            countryId: country.id, country: country.name, flag: country.flag, category: 'Safety',
             task: `Check travel insurance coverage for ${country.name}`,
             detail: country.safety.insurance_note,
             daysBeforeMin: 14, daysBeforeIdeal: 30,
-            urgency: 'high', source: country.safety.source, arrivalDate
+            urgency: 'high', isMustDo: true, source: country.safety.source, arrivalDate
           });
         }
         tasks.push({
-          country: country.name, flag: country.flag, category: 'Safety',
+          countryId: country.id, country: country.name, flag: country.flag, category: 'Safety',
           task: `Review safety advisory for ${country.name}`,
           detail: country.safety.description,
           daysBeforeMin: 7, daysBeforeIdeal: 14,
-          urgency: country.safety.level >= 3 ? 'high' : 'low', source: country.safety.source, arrivalDate
+          urgency: country.safety.level >= 3 ? 'high' : 'low',
+          isMustDo: country.safety.level >= 3,
+          source: country.safety.source, arrivalDate
         });
 
         /* Advance bookings */
@@ -512,52 +708,62 @@
           else if (lt.includes('week') || lt.includes('4')) { daysMin = 14; daysIdeal = 28; }
           else if (lt.includes('before departure') || lt.includes('purchase before')) { daysMin = 14; daysIdeal = 30; }
           tasks.push({
-            country: country.name, flag: country.flag, category: 'Booking',
+            countryId: country.id, country: country.name, flag: country.flag, category: 'Booking',
             task: `Book: ${b.name}`,
             detail: `${b.description} (Lead time: ${b.lead_time})`,
             daysBeforeMin: daysMin, daysBeforeIdeal: daysIdeal,
-            urgency: daysMin >= 30 ? 'high' : 'medium', source: b.source,
-            bookingUrl: b.booking_url, arrivalDate
+            urgency: daysMin >= 30 ? 'high' : 'medium',
+            isMustDo: false,
+            source: b.source, bookingUrl: b.booking_url, arrivalDate
           });
         });
 
         /* Practical prep */
         tasks.push({
-          country: country.name, flag: country.flag, category: 'Practical',
+          countryId: country.id, country: country.name, flag: country.flag, category: 'Practical',
           task: `Get plug adapter for ${country.name}`,
           detail: country.practical.plug_type.value,
           daysBeforeMin: 3, daysBeforeIdeal: 14,
-          urgency: 'low', source: country.practical.plug_type.source, arrivalDate
+          urgency: 'low', isMustDo: false, source: country.practical.plug_type.source, arrivalDate
         });
         tasks.push({
-          country: country.name, flag: country.flag, category: 'Practical',
+          countryId: country.id, country: country.name, flag: country.flag, category: 'Practical',
           task: `Arrange eSIM or local SIM for ${country.name}`,
           detail: country.practical.esim.value,
           daysBeforeMin: 1, daysBeforeIdeal: 7,
-          urgency: 'low', source: country.practical.esim.source, arrivalDate
+          urgency: 'low', isMustDo: false, source: country.practical.esim.source, arrivalDate
         });
         tasks.push({
-          country: country.name, flag: country.flag, category: 'Practical',
+          countryId: country.id, country: country.name, flag: country.flag, category: 'Practical',
           task: `Research local transport in ${country.name}`,
           detail: country.practical.transport.value,
           daysBeforeMin: 1, daysBeforeIdeal: 7,
-          urgency: 'low', source: country.practical.transport.source, arrivalDate
+          urgency: 'low', isMustDo: false, source: country.practical.transport.source, arrivalDate
         });
+        if (country.practical.water_quality) {
+          tasks.push({
+            countryId: country.id, country: country.name, flag: country.flag, category: 'Practical',
+            task: `Water quality in ${country.name}`,
+            detail: country.practical.water_quality.value,
+            daysBeforeMin: 1, daysBeforeIdeal: 7,
+            urgency: 'low', isMustDo: false, source: country.practical.water_quality.source, arrivalDate
+          });
+        }
 
         /* Culture */
         tasks.push({
-          country: country.name, flag: country.flag, category: 'Culture',
+          countryId: country.id, country: country.name, flag: country.flag, category: 'Culture',
           task: `Read cultural tips for ${country.name}`,
           detail: country.culture.map(c => c.title).join(', '),
           daysBeforeMin: 1, daysBeforeIdeal: 7,
-          urgency: 'low', source: country.culture[0].source, arrivalDate
+          urgency: 'low', isMustDo: false, source: country.culture[0].source, arrivalDate
         });
       });
 
-      /* Sort by ideal days before (most urgent first) */
+      allTasks = tasks;
+
       tasks.sort((a, b) => b.daysBeforeIdeal - a.daysBeforeIdeal);
 
-      /* Group into timeline phases */
       const phases = [
         { label: '3+ months before', min: 90, tasks: [] },
         { label: '1 to 3 months before', min: 30, tasks: [] },
@@ -565,7 +771,6 @@
         { label: '1 to 2 weeks before', min: 7, tasks: [] },
         { label: 'Final week', min: 0, tasks: [] }
       ];
-
       tasks.forEach(t => {
         const ideal = t.daysBeforeIdeal;
         if (ideal >= 90) phases[0].tasks.push(t);
@@ -575,7 +780,7 @@
         else phases[4].tasks.push(t);
       });
 
-      /* ---- Render results ---- */
+      /* ---- Show results area ---- */
       const results = $('#planner-results');
       results.style.display = 'block';
 
@@ -591,31 +796,24 @@
         &middot; ${daysUntilFirst} days from now &middot; ${passportName} passport
       `;
 
-      /* ---- Build and show the map ---- */
+      /* Show/hide EU residence note */
+      $('#eu-residence-note').style.display = secondaryDoc ? 'block' : 'none';
+
+      /* ---- Map ---- */
       const mapDiv = $('#trip-map');
       mapDiv.style.display = 'block';
-
-      /* Destroy previous map if any */
-      if (mapInstance) {
-        mapInstance.remove();
-        mapInstance = null;
-      }
+      if (mapInstance) { mapInstance.remove(); mapInstance = null; }
 
       mapInstance = L.map('trip-map');
       L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-        subdomains: 'abcd',
-        maxZoom: 19
+        subdomains: 'abcd', maxZoom: 19
       }).addTo(mapInstance);
 
       const allLatLngs = [];
-
-      /* Origin marker */
       const originIcon = L.divIcon({
         html: '<div class="origin-icon">&#9992;&#xFE0F;</div>',
-        iconSize: [32, 32],
-        iconAnchor: [16, 16],
-        className: ''
+        iconSize: [32, 32], iconAnchor: [16, 16], className: ''
       });
       const originLatLng = [origin.lat, origin.lng];
       allLatLngs.push(originLatLng);
@@ -623,21 +821,13 @@
         .bindPopup(`<div class="map-popup"><div class="map-popup-title">${esc(origin.name)} (${esc(origin.code)})</div><div class="map-popup-dates" style="color:#888">Your departure city</div></div>`)
         .addTo(mapInstance);
 
-      /* Route points: origin + all destinations */
       const routePoints = [originLatLng];
-
-      /* Destination markers */
-      let prevLat = origin.lat;
-      let prevLng = origin.lng;
-      let prevLabel = origin.name;
+      let prevLat = origin.lat, prevLng = origin.lng, prevLabel = origin.name;
 
       selectedDestinations.forEach((dest, i) => {
         const country = TRAVEL_DATA[dest.id];
-        const lat = country.lat;
-        const lng = country.lng;
-
+        const lat = country.lat, lng = country.lng;
         if (lat == null || lng == null) return;
-
         const latlng = [lat, lng];
         allLatLngs.push(latlng);
         routePoints.push(latlng);
@@ -655,44 +845,31 @@
         </div>`;
 
         const circleMarker = L.circleMarker(latlng, {
-          radius: 9,
-          color: '#2c5f2e',
-          fillColor: '#fff',
-          fillOpacity: 1,
-          weight: 2.5
+          radius: 9, color: '#2c5f2e', fillColor: '#fff', fillOpacity: 1, weight: 2.5
         }).addTo(mapInstance);
 
-        /* Number label */
         const numIcon = L.divIcon({
           html: `<div style="width:18px;height:18px;background:#2c5f2e;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;font-family:Montserrat,sans-serif;">${i + 1}</div>`,
-          iconSize: [18, 18],
-          iconAnchor: [9, 9],
-          className: ''
+          iconSize: [18, 18], iconAnchor: [9, 9], className: ''
         });
         L.marker(latlng, { icon: numIcon }).addTo(mapInstance);
-
         circleMarker.bindPopup(popupHTML);
         circleMarker.on('mouseover', function() { this.openPopup(); });
 
-        prevLat = lat;
-        prevLng = lng;
-        prevLabel = country.name;
+        prevLat = lat; prevLng = lng; prevLabel = country.name;
       });
 
-      /* Dashed polyline route */
-      L.polyline(routePoints, {
-        color: '#2c5f2e',
-        weight: 2,
-        dashArray: '8, 8',
-        opacity: 0.7
-      }).addTo(mapInstance);
+      L.polyline(routePoints, { color: '#2c5f2e', weight: 2, dashArray: '8, 8', opacity: 0.7 }).addTo(mapInstance);
+      if (allLatLngs.length > 1) mapInstance.fitBounds(allLatLngs, { padding: [40, 40] });
+      else if (allLatLngs.length === 1) mapInstance.setView(allLatLngs[0], 5);
 
-      /* Fit map to all markers */
-      if (allLatLngs.length > 1) {
-        mapInstance.fitBounds(allLatLngs, { padding: [40, 40] });
-      } else if (allLatLngs.length === 1) {
-        mapInstance.setView(allLatLngs[0], 5);
-      }
+      /* ---- Destination tabs ---- */
+      const destTabsEl = $('#dest-tabs');
+      destTabsEl.innerHTML = `<button class="dest-tab active" data-dest="all">\ud83c\udf0d All destinations</button>` +
+        selectedDestinations.map(d => {
+          const c = TRAVEL_DATA[d.id];
+          return `<button class="dest-tab" data-dest="${esc(d.id)}">${c.flag} ${esc(c.name)}</button>`;
+        }).join('');
 
       /* ---- Overdue warnings banner ---- */
       let warnings = '';
@@ -701,9 +878,9 @@
         return deadlineMs < today.getTime() && t.urgency !== 'low';
       });
       if (overdue.length > 0) {
-        warnings = `<div class="insurance-warning" style="margin-bottom: 32px;">
+        warnings = `<div class="insurance-warning" style="margin-bottom: 32px; max-width: 800px;">
           <strong>Heads up: ${overdue.length} item${overdue.length > 1 ? 's' : ''} may need immediate attention</strong>
-          <p>Based on your travel dates, some preparation tasks are past their recommended start date. These are highlighted in the timeline below.</p>
+          <p>Based on your travel dates, some preparation tasks are past their recommended start date. These are highlighted below.</p>
         </div>`;
       }
 
@@ -713,15 +890,12 @@
         const isPast = deadlineDate < today;
         const daysAway = Math.ceil((deadlineDate - today) / 86400000);
         const isSoon = !isPast && daysAway <= 7;
-
         let color = 'var(--text-light, #999)';
         if (isPast) color = '#d9534f';
         else if (isSoon) color = '#e67e22';
-
         const label = isPast
           ? `<span style="color:#d9534f">&#9888; Overdue (was ${fmtDate(deadlineDate)})</span>`
           : `Complete by: ${fmtDate(deadlineDate)}`;
-
         return `<span class="task-deadline" style="color:${color}">${label}</span>`;
       }
 
@@ -733,41 +907,127 @@
           return deadlineMs < today.getTime() && t.urgency !== 'low';
         });
 
+        const mustDoTasks = phase.tasks.filter(t => t.isMustDo);
+        const secondaryTasks = phase.tasks.filter(t => !t.isMustDo);
+
+        const renderTask = (t) => `
+          <div class="timeline-task urgency-${t.urgency}"
+               data-dest="${esc(t.countryId)}"
+               data-cat="${esc(t.category)}"
+               data-mustdo="${t.isMustDo}">
+            <div class="timeline-task-header">
+              <span class="timeline-task-country">${t.flag}</span>
+              <span class="timeline-task-category">${t.category}</span>
+              ${t.isMustDo ? '<span class="badge badge-required">Must-Do</span>' : ''}
+            </div>
+            <h4>${esc(t.task)}</h4>
+            <p>${sourced(esc(t.detail), t.source)}</p>
+            ${deadlineTag(t)}
+            ${t.bookingUrl ? `<a href="${esc(t.bookingUrl)}" target="_blank" rel="noopener" class="booking-link">Book / Where to book &nearr;</a>` : ''}
+          </div>`;
+
+        let tasksHTML = '';
+        if (mustDoTasks.length > 0) {
+          tasksHTML += `<div class="must-do-separator must">Must-Do</div>`;
+          tasksHTML += mustDoTasks.map(renderTask).join('');
+        }
+        if (secondaryTasks.length > 0) {
+          if (mustDoTasks.length > 0) {
+            tasksHTML += `<div class="must-do-separator secondary">Also prepare</div>`;
+          }
+          tasksHTML += secondaryTasks.map(renderTask).join('');
+        }
+
         timelineHTML += `
           <div class="timeline-phase ${phaseIsOverdue ? 'timeline-overdue' : ''}">
             <div class="timeline-phase-header">
               <span class="timeline-dot ${phaseIsOverdue ? 'dot-overdue' : ''}"></span>
               <h3>${phase.label}${phaseIsOverdue ? ' <span class="overdue-tag">Start now!</span>' : ''}</h3>
             </div>
-            <div class="timeline-tasks">
-              ${phase.tasks.map(t => `
-                <div class="timeline-task urgency-${t.urgency}">
-                  <div class="timeline-task-header">
-                    <span class="timeline-task-country">${t.flag}</span>
-                    <span class="timeline-task-category">${t.category}</span>
-                    ${t.urgency === 'high' ? '<span class="badge badge-required">Important</span>' : ''}
-                  </div>
-                  <h4>${esc(t.task)}</h4>
-                  <p>${sourced(esc(t.detail), t.source)}</p>
-                  ${deadlineTag(t)}
-                  ${t.bookingUrl ? `<a href="${esc(t.bookingUrl)}" target="_blank" rel="noopener" class="booking-link">Book now &nearr;</a>` : ''}
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
+            <div class="timeline-tasks">${tasksHTML}</div>
+          </div>`;
       });
 
       $('#timeline').innerHTML = timelineHTML;
 
-      /* Scroll to results */
+      /* ---- Show filter bar + calendar btn + disclaimer ---- */
+      $('#filter-bar').style.display = 'flex';
+      $('#calendar-btn').style.display = 'inline-flex';
+      $('#results-disclaimer').style.display = 'block';
+
+      /* ---- Wire up filters ---- */
+      function applyFilters() {
+        const destFilter = document.querySelector('.dest-tab.active').dataset.dest;
+        const catFilter = document.querySelector('.filter-chip.active').dataset.cat;
+        const minimalMode = $('#minimal-mode').checked;
+
+        document.querySelectorAll('.timeline-task').forEach(task => {
+          const matchesDest = destFilter === 'all' || task.dataset.dest === destFilter;
+          const matchesCat = catFilter === 'all' || task.dataset.cat === catFilter;
+          const matchesMode = !minimalMode || task.dataset.mustdo === 'true';
+          task.classList.toggle('task-hidden', !(matchesDest && matchesCat && matchesMode));
+        });
+
+        // Hide phases that become empty
+        document.querySelectorAll('.timeline-phase').forEach(phase => {
+          const visible = phase.querySelectorAll('.timeline-task:not(.task-hidden)').length;
+          phase.style.display = visible === 0 ? 'none' : '';
+        });
+
+        // Hide Must-Do / Also-prepare separators when their group is entirely hidden
+        document.querySelectorAll('.must-do-separator').forEach(sep => {
+          const next = sep.nextElementSibling;
+          const group = [];
+          let el = sep.nextElementSibling;
+          while (el && !el.classList.contains('must-do-separator')) {
+            if (el.classList.contains('timeline-task')) group.push(el);
+            el = el.nextElementSibling;
+          }
+          const anyVisible = group.some(t => !t.classList.contains('task-hidden'));
+          sep.style.display = anyVisible ? '' : 'none';
+        });
+      }
+
+      document.querySelectorAll('.dest-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.dest-tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          applyFilters();
+        });
+      });
+      document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          applyFilters();
+        });
+      });
+      $('#minimal-mode').addEventListener('change', applyFilters);
+
+      /* ---- Calendar export ---- */
+      $('#calendar-btn').addEventListener('click', () => {
+        let ics = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Travel Lab//Travel Prep//EN\r\n';
+        allTasks.forEach(t => {
+          const dl = new Date(t.arrivalDate.getTime() - t.daysBeforeIdeal * 86400000);
+          const ds = dl.toISOString().replace(/-/g,'').split('T')[0];
+          const summary = t.task.replace(/[,;\\]/g, c => '\\' + c);
+          const desc = (t.detail || '').replace(/[,;\\]/g, c => '\\' + c).replace(/\n/g, '\\n');
+          ics += `BEGIN:VEVENT\r\nDTSTART;VALUE=DATE:${ds}\r\nDTEND;VALUE=DATE:${ds}\r\nSUMMARY:${summary}\r\nDESCRIPTION:${desc}\r\nEND:VEVENT\r\n`;
+        });
+        ics += 'END:VCALENDAR';
+        const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'travel-lab-prep.ics'; a.click();
+        URL.revokeObjectURL(url);
+      });
+
       results.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    /* ---- Source Tooltip (same as country page) ---- */
+    /* ---- Source Tooltip ---- */
     const tooltip = $('#source-tooltip');
     let tooltipTimeout;
-
     document.addEventListener('mouseover', (e) => {
       const el = e.target.closest('.sourced');
       if (!el) return;
@@ -780,7 +1040,6 @@
       tooltip.style.left = Math.min(rect.left + window.scrollX, window.innerWidth - 300) + 'px';
       tooltip.classList.add('visible');
     });
-
     document.addEventListener('mouseout', (e) => {
       const el = e.target.closest('.sourced');
       if (!el) return;
@@ -788,11 +1047,8 @@
       if (related && (related.closest('.sourced') === el || related.closest('.source-tooltip'))) return;
       tooltipTimeout = setTimeout(() => tooltip.classList.remove('visible'), 200);
     });
-
     tooltip.addEventListener('mouseover', () => clearTimeout(tooltipTimeout));
-    tooltip.addEventListener('mouseout', () => {
-      tooltipTimeout = setTimeout(() => tooltip.classList.remove('visible'), 200);
-    });
+    tooltip.addEventListener('mouseout', () => { tooltipTimeout = setTimeout(() => tooltip.classList.remove('visible'), 200); });
 
   })();
   </script>

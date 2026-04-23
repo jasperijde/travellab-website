@@ -1780,6 +1780,12 @@ h3 { font-size: 1.3rem; }
 }
 
 /* ============================================
+   LAW CARDS (country page)
+   ============================================ */
+/* Law cards share .info-card styling; the badge signals severity.
+   No extra CSS needed beyond what badge-required / badge-leadtime provide. */
+
+/* ============================================
    RESPONSIVE
    ============================================ */
 
