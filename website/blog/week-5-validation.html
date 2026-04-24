@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>9 users. 4 hypotheses. All confirmed. Here's what we're fixing anyway. | Travel Lab Blog</title>
+  <meta name="description" content="We built the MVP and put it in front of 9 real travellers. Every solution hypothesis passed. Then they told us what was still broken.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ====== NAVBAR ====== -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="navbar-logo">
+        <img src="../images/logo.png" alt="Travel Lab logo">
+        <span>Travel Lab</span>
+      </a>
+      <button class="menu-toggle" onclick="document.querySelector('.navbar-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/#explore">Explore</a></li>
+        <li><a href="/planner/">Plan My Trip</a></li>
+        <li><a href="/blog/" class="active">Blog</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ====== BLOG POST ====== -->
+  <section class="blog-post">
+    <div class="container">
+      <div class="blog-post-content">
+        <a href="/blog/" class="back-link">&larr; Back to all posts</a>
+        <p class="post-meta">From the Travel Lab Team &middot; April 24, 2026 &middot; 7 min read</p>
+        <h1>9 users. 4 hypotheses. All confirmed. Here's what we're fixing anyway.</h1>
+        <p class="post-subtitle">We built the MVP, put it in front of 9 real travellers across EU and non-EU backgrounds, and measured it against every hypothesis we set. All four passed. Then came the honest feedback.</p>
+
+        <p>
+          Last week we launched the first public version of Travel Lab's core feature: the Plan My Trip planner. Built in under two weeks, it lets you enter your passport, destination, and travel dates and get a structured, time-stamped checklist of everything you need to do before you fly. We then sat down with 9 users, ran them through the tool, and tested four specific hypotheses about whether it actually worked.
+        </p>
+        <p>
+          This is what we found.
+        </p>
+
+        <hr class="section-divider">
+
+        <!-- ====== THE MVP ====== -->
+        <p class="section-label">What We Built</p>
+        <h2>The Plan My Trip planner.</h2>
+
+        <p>
+          The MVP is a browser-based planning tool. You select your passport nationality, your destination country, and your departure date. Within seconds, the tool generates a personalised checklist: visa requirements, vaccination appointments, insurance deadlines, booking windows for tickets and permits, and cultural preparation tasks. Each item is anchored to a specific number of weeks before your trip, so you always know what needs to happen now and what can wait.
+        </p>
+        <p>
+          We built in passport-aware logic from the start, because one of the core findings from our problem research was that preparation burden varies dramatically depending on where you're from. The same trip to Japan looks very different for an EU passport holder versus someone from a non-EU country navigating a different visa process. The planner reflects that.
+        </p>
+        <p>
+          We tested the tool with 9 participants recruited through our personal networks and university contacts: a mix of frequent and infrequent travellers, EU and non-EU passport holders, and people planning trips to different destinations.
+        </p>
+
+        <hr class="section-divider">
+
+        <!-- ====== THE HYPOTHESES ====== -->
+        <p class="section-label">The Results</p>
+        <h2>All four passed.</h2>
+
+        <div class="stats-row">
+          <div class="stat-box">
+            <span class="stat-number">9/9</span>
+            <span class="stat-label">completed in under 10 minutes</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">4.3/5</span>
+            <span class="stat-label">mean trust rating</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">discovered tasks they hadn't considered</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-number">9/9</span>
+            <span class="stat-label">said yes or probably yes to switching</span>
+          </div>
+        </div>
+
+        <div class="hypothesis-card confirmed">
+          <span class="hypothesis-tag">SH1 &middot; Time to Value</span>
+          <span class="hypothesis-status">Confirmed</span>
+          <p>Our threshold was that 80% of users should complete a full trip plan in 10 minutes or less. Every single participant finished in 3 to 10 minutes. The interaction is fast enough to fit into a spontaneous planning moment, not just a dedicated research session.</p>
+        </div>
+
+        <div class="hypothesis-card confirmed">
+          <span class="hypothesis-tag">SH2 &middot; Perceived Trustworthiness</span>
+          <span class="hypothesis-status">Confirmed</span>
+          <p>We set a mean trust score threshold of 4.0 out of 5. The actual result was 4.3, with 8 of 9 participants rating trust at 4 or 5. The sourced, structured presentation of official information appears to be doing exactly what we intended.</p>
+        </div>
+
+        <div class="hypothesis-card confirmed">
+          <span class="hypothesis-tag">SH3 &middot; Discovery of Unknown Tasks</span>
+          <span class="hypothesis-status">Confirmed</span>
+          <p>We predicted that at least 70% of users would discover at least one task they hadn't thought of before. In practice, 100% discovered between 2 and 15 new tasks. The gap between what travellers know they need to do and what they actually need to do is larger than we expected even after all our research.</p>
+        </div>
+
+        <div class="hypothesis-card confirmed">
+          <span class="hypothesis-tag">SH4 &middot; Switching Intent</span>
+          <span class="hypothesis-status">Confirmed</span>
+          <p>The threshold was 70% saying they would switch to Travel Lab from their current preparation process. All 9 participants said yes or probably yes. The existing process isn't just inconvenient. For most people, there isn't really a process at all. Travel Lab is filling something that's currently empty.</p>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- ====== USER QUOTES ====== -->
+        <p class="section-label">What They Said</p>
+        <h2>Three quotes that stayed with us.</h2>
+
+        <blockquote class="blog-quote">
+          "This went from a 3-hour research session to about 3 minutes. I actually can't believe I used to do it the other way."
+          <cite>&mdash; Tymoteusz, frequent traveller, non-EU passport</cite>
+        </blockquote>
+
+        <blockquote class="blog-quote">
+          "I feel very dumb. I hadn't thought of any of this and I've been to Japan twice."
+          <cite>&mdash; Clara, infrequent traveller, EU passport</cite>
+        </blockquote>
+
+        <blockquote class="blog-quote">
+          "It's fast, it's fast. And it looks trustworthy. Like, I can see it's verified. That matters."
+          <cite>&mdash; Nico, occasional traveller, EU passport</cite>
+        </blockquote>
+
+        <p>
+          What's striking about these three responses is that they come from different traveller profiles and land on different things: speed, completeness, and credibility. Each of those is something we consciously designed for. It is useful confirmation that the design choices are being read the way we intended.
+        </p>
+
+        <hr class="section-divider">
+
+        <!-- ====== UX ISSUES ====== -->
+        <p class="section-label">Where It Fell Short</p>
+        <h2>Three things that still don't work well enough.</h2>
+
+        <p>
+          Confirming hypotheses doesn't mean the product is finished. The same sessions that validated the core concept surfaced three consistent friction points that we're treating as the immediate roadmap.
+        </p>
+
+        <div class="needs-list">
+          <div class="need-item">
+            <strong>No sense of priority</strong>
+            <em>Several users asked a version of the same question: "What do I actually need to do first?" The checklist is complete, but completeness without hierarchy creates a different kind of overwhelm. Users with upcoming trips especially need to see what's urgent now, not a flat list of everything.</em>
+          </div>
+          <div class="need-item">
+            <strong>Information overload for lighter travellers</strong>
+            <em>For users planning short or relatively simple trips, the full checklist felt heavier than their situation warranted. The tool serves the thorough planner well. It serves the spontaneous traveller less well. One interface covering both user types creates friction for each.</em>
+          </div>
+          <div class="need-item">
+            <strong>Two distinct user types, one design</strong>
+            <em>The sessions made clear that our users split into two recognisable groups: those who want maximum detail and control, and those who want to know the essentials and get moving. The current design defaults to the first group. It needs to accommodate both without asking either to compromise.</em>
+          </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- ====== WHAT WE'RE BUILDING ====== -->
+        <p class="section-label">What's Next</p>
+        <h2>The optimisation brief.</h2>
+
+        <p>
+          These three friction points, combined with what we've learned over the full five weeks of research, define exactly what the next version of the planner needs to do. We've already begun implementing several of these changes.
+        </p>
+
+        <div class="needs-list">
+          <div class="need-item">
+            <strong>Priority hierarchy in the timeline</strong>
+            <em>Must-do tasks (visas, vaccinations, bookings with hard deadlines) are now visually separated from recommended tasks. The critical path is visible at a glance, regardless of how far out the trip is.</em>
+          </div>
+          <div class="need-item">
+            <strong>Filtering by category and urgency</strong>
+            <em>Users can now filter the checklist by task type (Health, Visa, Safety, Booking, Culture) and toggle between a full view and a must-do only view. This gives both user types the right level of detail without forcing them to scroll past irrelevant information.</em>
+          </div>
+          <div class="need-item">
+            <strong>Passport-first flow with secondary document support</strong>
+            <em>The planner now asks for passport first. It also supports secondary travel documents (EU Residence Cards, ILR, EEA permits) that change entry requirements for non-citizens living in EU countries, which came up directly in sessions with non-EU participants.</em>
+          </div>
+          <div class="need-item">
+            <strong>Calendar export</strong>
+            <em>Users can export their task deadlines directly to their phone or desktop calendar as a .ics file. Preparation tasks that live in your calendar actually get done. Tasks that live in a browser tab generally don't.</em>
+          </div>
+          <div class="need-item">
+            <strong>Laws and local legality section</strong>
+            <em>Several participants were surprised to find they didn't know basic legal risks for their destination, things like photography restrictions near government buildings or e-cigarette bans. We've added a dedicated section to the country pages to cover this.</em>
+          </div>
+          <div class="need-item">
+            <strong>Monetisation starting with affiliate</strong>
+            <em>The natural first revenue layer is affiliate links attached to the tasks users are already completing: vaccination clinic bookings, visa application services, travel insurance. The advice and the action are already connected in the user journey. The affiliate link formalises that connection.</em>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          Five weeks in: 4 out of 5 problem hypotheses confirmed across 79 survey responses and 16 interviews. All 4 solution hypotheses confirmed across 9 MVP users. The product works. Now we make it work better.
+        </div>
+
+        <p>
+          The original question we set out to answer was whether the problem was real and whether a solution like ours could address it. Both questions now have answers. The focus from here is iteration: tightening the experience for the two user types we now understand clearly, and building toward a monetisation model that sits inside the value we're already delivering rather than on top of it.
+        </p>
+        <p>
+          We'll be back next week with more.
+        </p>
+
+        <!-- ====== COMMENTS ====== -->
+        <div id="disqus_thread" style="margin-top: 48px;"></div>
+        <script>
+          var disqus_config = function () {
+            this.page.url = window.location.href;
+            this.page.identifier = 'week-5-validation';
+          };
+          (function() {
+            var d = document, s = d.createElement('script');
+            s.src = 'https://travellab-1.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p>&copy; 2026 Travel Lab &middot; Prepare. Connect. Explore. &middot; RSM Erasmus University Rotterdam</p>
+        <ul class="footer-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="/#explore">Explore</a></li>
+          <li><a href="/planner/">Plan My Trip</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
